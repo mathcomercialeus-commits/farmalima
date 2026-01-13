@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DuLimaGroup | Empresas e Contatos</title>
+  <meta name="description" content="Apresentação do grupo e contatos das empresas com WhatsApp e endereços." />
+
+  <style>
+    :root{
+      /* Paleta baseada na sua logo */
+      --bg: #050608;
+      --panel: rgba(255,255,255,.05);
+      --panel2: rgba(255,255,255,.08);
+      --text: #EAF2F2;
+      --muted: rgba(234,242,242,.68);
+
+      --red: #EC1F26;     /* cruz */
+      --teal: #34CCD1;    /* seta */
+      --stroke: rgba(255,255,255,.10);
+
+      --radius: 18px;
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 520px at 12% 10%, rgba(52,204,209,.16), transparent 60%),
+        radial-gradient(900px 520px at 88% 0%, rgba(236,31,38,.16), transparent 62%),
+        var(--bg);
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    .wrap{ max-width: 1100px; margin: 0 auto; padding: 26px 18px 70px; }
+
+    /* Top bar */
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      padding: 16px 16px;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+    .brand{
+      display:flex; gap:14px; align-items:center;
+      min-width: 220px;
+    }
+    .brand img{
+      width: 46px; height: 46px; object-fit: contain;
+      filter: drop-shadow(0 12px 25px rgba(0,0,0,.35));
+    }
+    .brand h1{ margin:0; font-size: 18px; letter-spacing:.2px; }
+    .brand p{ margin:4px 0 0; color: var(--muted); font-size: 13px; }
+
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+    .btn{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(52,204,209,.55); }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(52,204,209,.16), rgba(236,31,38,.12));
+      border-color: rgba(52,204,209,.35);
+    }
+    .dot{ width:8px; height:8px; border-radius:99px; background: var(--teal); box-shadow: 0 0 0 4px rgba(52,204,209,.15); }
+    .dot.red{ background: var(--red); box-shadow: 0 0 0 4px rgba(236,31,38,.15); }
+
+    /* Hero */
+    .hero{
+      margin-top: 14px;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.03);
+      padding: 18px;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    @media (max-width: 860px){
+      .heroGrid{ grid-template-columns: 1fr; }
+    }
+    .hero h2{ margin: 0 0 8px; font-size: 22px; }
+    .hero p{ margin: 0; color: var(--muted); line-height: 1.55; }
+
+    .logoCard{
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(52,204,209,.10), rgba(236,31,38,.08)),
+        rgba(255,255,255,.03);
+      padding: 16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height: 140px;
+      box-shadow: 0 16px 40px rgba(0,0,0,.35);
+    }
+    .logoCard img{
+      width: 100%;
+      max-width: 360px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    /* Cards */
+    .sectionTitle{
+      margin-top: 18px;
+      display:flex; align-items:flex-end; justify-content:space-between; gap:10px;
+    }
+    .sectionTitle h3{ margin:0; font-size: 16px; }
+    .sectionTitle span{ color: var(--muted); font-size: 12px; }
+
+    .grid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 12px;
+    }
+    .card{
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.04);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .cardHead{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .card h4{ margin:0; font-size: 16px; }
+    .badge{
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(52,204,209,.35);
+      background: rgba(52,204,209,.12);
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .badge.red{
+      border-color: rgba(236,31,38,.35);
+      background: rgba(236,31,38,.12);
+    }
+    .small{ margin: 8px 0 0; color: var(--muted); font-size: 13px; line-height:1.45; }
+
+    .rows{ margin-top: 12px; display:flex; flex-direction:column; gap:10px; }
+    .rowLink{
+      display:flex; align-items:flex-start; gap:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      transition: border-color .15s ease, transform .15s ease;
+    }
+    .rowLink:hover{
+      transform: translateY(-1px);
+      border-color: rgba(52,204,209,.45);
+    }
+    .ico{
+      width: 18px; height: 18px; border-radius: 6px;
+      display:inline-flex; align-items:center; justify-content:center;
+      background: rgba(52,204,209,.14);
+      border: 1px solid rgba(52,204,209,.35);
+      flex: 0 0 auto;
+      margin-top: 2px;
+    }
+    .ico.red{
+      background: rgba(236,31,38,.14);
+      border-color: rgba(236,31,38,.35);
+    }
+    .meta .k{ margin:0; font-size: 12px; color: var(--muted); }
+    .meta .v{ margin:2px 0 0; font-weight: 800; font-size: 14px; }
+
+    footer{
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <div class="topbar">
+      <div class="brand">
+        <img src="logo-farmalima.png" alt="Logo" />
+        <div>
+          <h1>DuLimaGroup</h1>
+          <p>Empresas • Endereços • Contato rápido via WhatsApp</p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <!-- TROQUE o WhatsApp principal do grupo -->
+        <a class="btn primary" href="https://wa.me/5592999999999?text=Olá!%20Quero%20informações%20sobre%20as%20empresas%20do%20grupo." target="_blank" rel="noopener">
+          <span class="dot"></span> Falar com o Grupo
+        </a>
+
+        <!-- TROQUE o link do Instagram/site se quiser -->
+        <a class="btn" href="#empresas">
+          <span class="dot red"></span> Ver empresas
+        </a>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="heroGrid">
+        <div>
+          <h2>Apresentação do Grupo</h2>
+          <p>
+            Somos um grupo com atuação em <b>serviços</b> e <b>varejo</b>, focado em atendimento rápido e presença local.
+            Aqui você encontra os <b>endereços</b> e <b>contatos</b> de cada unidade — ao clicar no telefone, abre direto no <b>WhatsApp</b>.
+          </p>
+          <p class="small" style="margin-top:10px;">
+            Dica: você pode colocar aqui um texto curto institucional (missão, visão, diferencial, tempo de mercado, etc.).
+          </p>
+        </div>
+
+        <div class="logoCard">
+          <img src="logo-farmalima.png" alt="Logo da empresa" />
+        </div>
+      </div>
+    </section>
+
+    <div class="sectionTitle" id="empresas">
+      <h3>Empresas e Unidades</h3>
+      <span>Clique para abrir WhatsApp ou Maps</span>
+    </div>
+
+    <div class="grid" id="cards"></div>
+
+    <footer>
+      © <span id="year"></span> DuLimaGroup • Todos os direitos reservados
+    </footer>
+  </div>
+
+  <script>
+    // ✅ Edite aqui as empresas (nome, endereço, whatsapp, maps)
+    // Formato do WhatsApp: 55 + DDD + número (sem espaços e sem traços)
+    const empresas = [
+      {
+        nome: "Drogaria Farma Lima",
+        tipo: "Farmácia",
+        corBadge: "red",
+        descricao: "Medicamentos, perfumaria e atendimento rápido.",
+        enderecoLabel: "Av. Exemplo, 123 - Bairro - Manaus/AM",
+        mapsLink: "https://www.google.com/maps?q=Av.%20Exemplo%20123%20Manaus%20AM",
+        whatsappNumber: "5592999999999",
+        whatsappMsg: "Olá! Quero informações da Drogaria Farma Lima."
+      },
+      {
+        nome: "Petshop DuLima",
+        tipo: "Petshop & Clínica",
+        corBadge: "",
+        descricao: "Banho e tosa, clínica veterinária e produtos pet.",
+        enderecoLabel: "Rua Exemplo, 456 - Bairro - Manaus/AM",
+        mapsLink: "https://www.google.com/maps?q=Rua%20Exemplo%20456%20Manaus%20AM",
+        whatsappNumber: "5592888888888",
+        whatsappMsg: "Olá! Quero informações do Petshop DuLima."
+      },
+      {
+        nome: "DuLimaGroup RH & Office",
+        tipo: "Serviços",
+        corBadge: "",
+        descricao: "Soluções administrativas, RH e suporte para empresas.",
+        enderecoLabel: "Travessa Exemplo, 789 - Bairro - Manaus/AM",
+        mapsLink: "https://www.google.com/maps?q=Travessa%20Exemplo%20789%20Manaus%20AM",
+        whatsappNumber: "5592777777777",
+        whatsappMsg: "Olá! Quero informações do DuLimaGroup."
+      }
+    ];
+
+    const cards = document.getElementById("cards");
+    const year = document.getElementById("year");
+    year.textContent = new Date().getFullYear();
+
+    function waLink(number, msg){
+      const text = encodeURIComponent(msg || "");
+      return `https://wa.me/${number}${text ? `?text=${text}` : ""}`;
+    }
+
+    cards.innerHTML = empresas.map(e => `
+      <article class="card">
+        <div class="cardHead">
+          <div>
+            <h4>${e.nome}</h4>
+            <p class="small">${e.descricao || ""}</p>
+          </div>
+          <span class="badge ${e.corBadge || ""}">${e.tipo}</span>
+        </div>
+
+        <div class="rows">
+          <a class="rowLink" href="${e.mapsLink}" target="_blank" rel="noopener">
+            <span class="ico" aria-hidden="true">📍</span>
+            <div class="meta">
+              <p class="k">Endereço</p>
+              <p class="v">${e.enderecoLabel}</p>
+            </div>
+          </a>
+
+          <a class="rowLink" href="${waLink(e.whatsappNumber, e.whatsappMsg)}" target="_blank" rel="noopener">
+            <span class="ico red" aria-hidden="true">💬</span>
+            <div class="meta">
+              <p class="k">WhatsApp</p>
+              <p class="v">Clique para conversar</p>
+            </div>
+          </a>
+        </div>
+      </article>
+    `).join("");
+  </script>
+</body>
+</html>
