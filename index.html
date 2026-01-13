@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Farma Lima</title>
+
+  <style>
+    :root{
+      --bg:#050608;
+      --panel: rgba(255,255,255,.05);
+      --stroke: rgba(255,255,255,.10);
+      --text:#EAF2F2;
+      --muted: rgba(234,242,242,.68);
+      --red:#EC1F26;
+      --teal:#34CCD1;
+      --radius:18px;
+      --shadow:0 18px 50px rgba(0,0,0,.45);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 520px at 12% 10%, color-mix(in srgb, var(--teal) 16%, transparent), transparent 60%),
+        radial-gradient(900px 520px at 88% 0%, color-mix(in srgb, var(--red) 16%, transparent), transparent 62%),
+        var(--bg);
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:26px 18px 70px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+      padding:16px;border:1px solid var(--stroke);border-radius:var(--radius);
+      background:rgba(255,255,255,.04);backdrop-filter:blur(10px);
+      box-shadow:var(--shadow);
+    }
+    .brand{display:flex;gap:14px;align-items:center;min-width:220px}
+    .brand img{width:46px;height:46px;object-fit:contain;filter:drop-shadow(0 12px 25px rgba(0,0,0,.35))}
+    .brand h1{margin:0;font-size:18px}
+    .brand p{margin:4px 0 0;color:var(--muted);font-size:13px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .btn{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      padding:10px 14px;border-radius:999px;font-weight:800;font-size:13px;
+      transition:.15s;display:inline-flex;align-items:center;gap:8px;
+    }
+    .btn:hover{transform:translateY(-1px);border-color:color-mix(in srgb, var(--teal) 55%, transparent)}
+    .btn.primary{
+      background: linear-gradient(135deg,
+        color-mix(in srgb, var(--teal) 16%, transparent),
+        color-mix(in srgb, var(--red) 12%, transparent)
+      );
+      border-color: color-mix(in srgb, var(--teal) 35%, transparent);
+    }
+    .hero{
+      margin-top:14px;border:1px solid var(--stroke);border-radius:var(--radius);
+      background:rgba(255,255,255,.03);padding:18px;
+    }
+    .heroGrid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;align-items:stretch}
+    @media (max-width:860px){.heroGrid{grid-template-columns:1fr}}
+    .hero h2{margin:0 0 8px;font-size:22px}
+    .hero p{margin:0;color:var(--muted);line-height:1.55}
+    .logoCard{
+      border:1px solid var(--stroke);border-radius:var(--radius);
+      background: linear-gradient(135deg,
+        color-mix(in srgb, var(--teal) 10%, transparent),
+        color-mix(in srgb, var(--red) 8%, transparent)
+      ), rgba(255,255,255,.03);
+      padding:16px;display:flex;align-items:center;justify-content:center;min-height:140px;
+      box-shadow:0 16px 40px rgba(0,0,0,.35);
+    }
+    .logoCard img{width:100%;max-width:360px;height:auto;object-fit:contain}
+
+    .sectionTitle{margin-top:18px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+    .sectionTitle h3{margin:0;font-size:16px}
+    .sectionTitle span{color:var(--muted);font-size:12px}
+    .grid{margin-top:10px;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}
+    .card{
+      border:1px solid var(--stroke);border-radius:var(--radius);
+      background:rgba(255,255,255,.04);padding:16px;box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+    .cardHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .card h4{margin:0;font-size:16px}
+    .badge{
+      font-size:11px;font-weight:900;letter-spacing:.2px;padding:6px 10px;border-radius:999px;
+      border:1px solid color-mix(in srgb, var(--teal) 35%, transparent);
+      background:color-mix(in srgb, var(--teal) 12%, transparent);
+      white-space:nowrap;
+    }
+    .badge.red{
+      border-color: color-mix(in srgb, var(--red) 35%, transparent);
+      background: color-mix(in srgb, var(--red) 12%, transparent);
+    }
+    .small{margin:8px 0 0;color:var(--muted);font-size:13px;line-height:1.45}
+    .rows{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+    .rowLink{
+      display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);transition:.15s;
+    }
+    .rowLink:hover{transform:translateY(-1px);border-color:color-mix(in srgb, var(--teal) 45%, transparent)}
+    .meta .k{margin:0;font-size:12px;color:var(--muted)}
+    .meta .v{margin:2px 0 0;font-weight:900;font-size:14px}
+    footer{margin-top:20px;color:var(--muted);font-size:12px;text-align:center}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <img id="brandLogoSmall" src="/assets/logo-farmalima.png" alt="Logo" />
+        <div>
+          <h1 id="siteName">Farma Lima</h1>
+          <p id="siteTagline">Endereços • Contatos • WhatsApp</p>
+        </div>
+      </div>
+      <div class="actions">
+        <a id="btnMainWhatsapp" class="btn primary" href="#" target="_blank" rel="noopener">Falar no WhatsApp</a>
+        <a class="btn" href="#unidades">Ver unidades</a>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="heroGrid">
+        <div>
+          <h2 id="heroTitle">Bem-vindo à Farma Lima</h2>
+          <p id="heroText">
+            Atendimento rápido, presença local e confiança. Clique no WhatsApp para falar agora ou veja as unidades abaixo.
+          </p>
+        </div>
+        <div class="logoCard">
+          <img id="brandLogoBig" src="/assets/logo-farmalima.png" alt="Logo Farma Lima" />
+        </div>
+      </div>
+    </section>
+
+    <div class="sectionTitle" id="unidades">
+      <h3>Unidades</h3>
+      <span>Clique para abrir WhatsApp ou Maps</span>
+    </div>
+
+    <div class="grid" id="cards"></div>
+
+    <footer>© <span id="year"></span> <span id="footerName">Farma Lima</span></footer>
+  </div>
+
+  <script>
+    const DEFAULT_CONTENT = {
+      theme: { bg:"#050608", text:"#EAF2F2", red:"#EC1F26", teal:"#34CCD1" },
+      brand: {
+        name:"Farma Lima",
+        tagline:"Endereços • Contatos • WhatsApp",
+        logoUrl:"/assets/logo-farmalima.png",
+      },
+      hero: {
+        title:"Bem-vindo à Farma Lima",
+        text:"Atendimento rápido, presença local e confiança. Clique no WhatsApp para falar agora ou veja as unidades abaixo."
+      },
+      mainWhatsapp: { number:"5592999999999", message:"Olá! Quero informações da Farma Lima." },
+      units: [
+        {
+          name:"Farma Lima • Unidade 1",
+          type:"Farmácia",
+          badge:"red",
+          description:"Medicamentos, perfumaria e atendimento rápido.",
+          address:"Av. Exemplo, 123 - Manaus/AM",
+          maps:"https://www.google.com/maps?q=Av.%20Exemplo%20123%20Manaus%20AM",
+          whatsapp:"5592999999999",
+          wmsg:"Olá! Quero informações da Farma Lima (Unidade 1)."
+        }
+      ]
+    };
+
+    const yearEl = document.getElementById("year");
+    yearEl.textContent = new Date().getFullYear();
+
+    function waLink(number, msg){
+      const text = encodeURIComponent(msg || "");
+      return `https://wa.me/${number}${text ? `?text=${text}` : ""}`;
+    }
+
+    function applyTheme(t){
+      const root = document.documentElement;
+      root.style.setProperty("--bg", t.bg);
+      root.style.setProperty("--text", t.text);
+      root.style.setProperty("--red", t.red);
+      root.style.setProperty("--teal", t.teal);
+    }
+
+    function render(content){
+      applyTheme(content.theme);
+
+      document.title = content.brand.name;
+      document.getElementById("siteName").textContent = content.brand.name;
+      document.getElementById("siteTagline").textContent = content.brand.tagline;
+      document.getElementById("footerName").textContent = content.brand.name;
+
+      const logo = content.brand.logoUrl || "/assets/logo-farmalima.png";
+      document.getElementById("brandLogoSmall").src = logo;
+      document.getElementById("brandLogoBig").src = logo;
+
+      document.getElementById("heroTitle").textContent = content.hero.title;
+      document.getElementById("heroText").textContent = content.hero.text;
+
+      const btn = document.getElementById("btnMainWhatsapp");
+      btn.href = waLink(content.mainWhatsapp.number, content.mainWhatsapp.message);
+      btn.textContent = content.mainWhatsapp.label || "Falar no WhatsApp";
+
+      const cards = document.getElementById("cards");
+      cards.innerHTML = content.units.map(u => `
+        <article class="card">
+          <div class="cardHead">
+            <div>
+              <h4>${u.name}</h4>
+              <p class="small">${u.description || ""}</p>
+            </div>
+            <span class="badge ${u.badge === "red" ? "red" : ""}">${u.type || "Unidade"}</span>
+          </div>
+
+          <div class="rows">
+            <a class="rowLink" href="${u.maps}" target="_blank" rel="noopener">
+              <div class="meta">
+                <p class="k">Endereço</p>
+                <p class="v">${u.address}</p>
+              </div>
+            </a>
+
+            <a class="rowLink" href="${waLink(u.whatsapp, u.wmsg)}" target="_blank" rel="noopener">
+              <div class="meta">
+                <p class="k">WhatsApp</p>
+                <p class="v">Clique para conversar</p>
+              </div>
+            </a>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    async function loadContent(){
+      try{
+        const r = await fetch("/api/content", { cache: "no-store" });
+        if(!r.ok) throw new Error("no content");
+        const data = await r.json();
+        render({ ...DEFAULT_CONTENT, ...data });
+      }catch(e){
+        render(DEFAULT_CONTENT);
+      }
+    }
+
+    loadContent();
+  </script>
+</body>
+</html>
