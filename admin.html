@@ -2,327 +2,272 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ADMIN • FARMA LIMA</title>
   <style>
-    :root{
-      --PRIMARY:#00E5D8;
-      --SECONDARY:#FF3B3B;
-      --DARK:#0B0F14;
-      --CARD:#121821;
-      --MUTED:#9CA3AF;
-      --WHITE:#FFFFFF;
-      --RADIUS:18px;
-      --BORDER: rgba(255,255,255,.08);
-      --SHADOW: 0 20px 60px rgba(0,0,0,.45);
-    }
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1100px 700px at 15% 10%, rgba(0,229,216,.18), transparent 55%),
-                  radial-gradient(1100px 700px at 85% 30%, rgba(255,59,59,.14), transparent 55%),
-                  var(--DARK);
-      color: var(--WHITE);
-      text-transform: uppercase;
-      letter-spacing:.6px;
-    }
-    .wrap{ max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
-    .top{
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
-      padding: 14px 16px;
-      border:1px solid var(--BORDER);
-      background: rgba(18,24,33,.65);
-      backdrop-filter: blur(10px);
-      border-radius: var(--RADIUS);
-      box-shadow: var(--SHADOW);
-    }
-    .top strong{ font-weight: 1000; letter-spacing:1.6px; }
-    .btn{
-      border:1px solid var(--BORDER);
-      background: rgba(255,255,255,.04);
-      color: var(--WHITE);
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-weight: 1000;
-      letter-spacing: 1.2px;
-      cursor:pointer;
-      transition: .18s ease;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      user-select:none;
-    }
-    .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.16); }
-    .btn.primary{ background: linear-gradient(180deg, rgba(0,229,216,1), rgba(0,180,170,1)); color:#00110f; border:none; }
-    .btn.danger{ background: linear-gradient(180deg, rgba(255,59,59,1), rgba(200,30,30,1)); border:none; }
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 14px;
-    }
-    .card{
-      border:1px solid var(--BORDER);
-      background: rgba(18,24,33,.62);
-      border-radius: var(--RADIUS);
-      box-shadow: 0 14px 40px rgba(0,0,0,.35);
-      padding: 16px;
-    }
-    label{ display:block; font-size: 11px; color: var(--MUTED); margin: 10px 0 6px; letter-spacing:1.2px; }
+    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:#050608;color:#EAF2F2;text-transform:uppercase;letter-spacing:.6px}
+    .wrap{max-width:1000px;margin:0 auto;padding:20px 16px 60px}
+    .card{border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:16px;background:rgba(255,255,255,.04);margin-top:12px}
+    h1{margin:0 0 8px;font-size:18px}
+    label{display:block;margin-top:10px;font-size:12px;color:rgba(234,242,242,.7)}
     input, textarea{
-      width:100%;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--WHITE);
-      outline:none;
-      font-weight: 800;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      width:100%; margin-top:6px; padding:10px 12px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.14); background:rgba(0,0,0,.25); color:#EAF2F2;
+      outline:none; text-transform:uppercase; letter-spacing:.8px; font-weight:800;
     }
-    textarea{ min-height: 90px; resize: vertical; }
-    .muted{ color: var(--MUTED); font-size: 11px; letter-spacing:1px; text-transform:none; }
-    .units{ display:flex; flex-direction:column; gap: 12px; }
-    .unitItem{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding: 12px;
+    textarea{min-height:80px;resize:vertical}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:800px){.row{grid-template-columns:1fr}}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    button,a.btn{
+      border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06);
+      color:#EAF2F2; padding:10px 14px; border-radius:999px; font-weight:1000; cursor:pointer;
+      text-decoration:none; display:inline-flex; align-items:center; justify-content:center;
     }
-    .row{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .status{ margin-top: 10px; font-size: 11px; letter-spacing:1px; text-transform:none; }
-    @media (max-width: 980px){
-      .grid{ grid-template-columns: 1fr; }
-      .row{ grid-template-columns: 1fr; }
-    }
+    button.primary{border-color: rgba(52,204,209,.45); background: rgba(52,204,209,.12)}
+    .hint{font-size:12px;color:rgba(234,242,242,.65);margin-top:8px;line-height:1.4;text-transform:none}
+    .unit{border:1px dashed rgba(255,255,255,.18);border-radius:14px;padding:12px;margin-top:10px}
+    .danger{border-color: rgba(236,31,38,.45); background: rgba(236,31,38,.10)}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="top">
-      <strong>ADMIN • FARMA LIMA</strong>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+    <h1>ADMIN • FARMA LIMA</h1>
+    <div class="hint">EDITE E CLIQUE EM <b>SALVAR</b>. O SITE VAI CARREGAR ESSAS CONFIGURAÇÕES AUTOMATICAMENTE.</div>
+
+    <div class="card">
+      <div class="btns">
+        <button class="danger" id="logout">SAIR</button>
         <a class="btn" href="/" target="_blank" rel="noopener">VER SITE</a>
-        <button class="btn primary" id="btnSave" type="button">SALVAR</button>
-        <button class="btn" id="btnReload" type="button">RECARREGAR</button>
-        <button class="btn danger" id="btnLogout" type="button">SAIR</button>
+        <button id="reload">RECARREGAR</button>
+        <button class="primary" id="save">SALVAR ALTERAÇÕES</button>
+      </div>
+      <div class="hint" id="status"></div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0;font-size:15px">MARCA</h2>
+      <label>NOME</label>
+      <input id="brandName" />
+      <label>SLOGAN</label>
+      <input id="brandTagline" />
+      <label>LOGO (URL OU CAMINHO, EX.: /assets/logo-farmalima.png)</label>
+      <input id="brandLogoUrl" />
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0;font-size:15px">TEMA (CORES)</h2>
+      <div class="row">
+        <div><label>FUNDO</label><input id="cBg" placeholder="#050608"></div>
+        <div><label>TEXTO</label><input id="cText" placeholder="#EAF2F2"></div>
+      </div>
+      <div class="row">
+        <div><label>VERMELHO (CRUZ)</label><input id="cRed" placeholder="#EC1F26"></div>
+        <div><label>CIANO (SETA)</label><input id="cTeal" placeholder="#34CCD1"></div>
       </div>
     </div>
 
-    <div class="grid">
-      <div class="card">
-        <div class="muted">VOCÊ JÁ ESTÁ LOGADO. (LOGIN É POR SENHA NO /ADMIN-LOGIN.HTML)</div>
-
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,.10);margin:14px 0;">
-
-        <label>NOME (TOPO)</label>
-        <input id="brandName" placeholder="FARMA LIMA" />
-
-        <label>SUBTÍTULO (TOPO)</label>
-        <input id="brandSub" placeholder="ENDEREÇOS • CONTATOS • WHATSAPP" />
-
-        <label>LOGO (CAMINHO OU URL) EX: /assets/logo-farmalima.png</label>
-        <input id="logoUrl" placeholder="/assets/logo-farmalima.png" />
-
-        <label>TEXTO DO PILL</label>
-        <input id="pillText" placeholder="DISK MEDICAÇÃO" />
-
-        <label>WHATSAPP GLOBAL (EX: 5592999999999)</label>
-        <input id="globalWhatsapp" placeholder="5592..." />
-
-        <label>FOOTER</label>
-        <input id="footerText" placeholder="© 2026 FARMA LIMA" />
-      </div>
-
-      <div class="card">
-        <label>TÍTULO HERO</label>
-        <input id="heroTitle" placeholder="BEM VINDO À FARMA LIMA" />
-
-        <label>DESCRIÇÃO HERO</label>
-        <textarea id="heroDesc" placeholder="ATENDIMENTO RÁPIDO..."></textarea>
-
-        <label>TÍTULO CARD HERO</label>
-        <input id="heroCardTitle" placeholder="ENTREGA RÁPIDA" />
-
-        <label>SUBTÍTULO CARD HERO</label>
-        <input id="heroCardSub" placeholder="CHAME NO WHATSAPP..." />
-      </div>
+    <div class="card">
+      <h2 style="margin:0;font-size:15px">TOPO / WHATSAPP PRINCIPAL</h2>
+      <label>NÚMERO WHATSAPP (55 + DDD + NÚMERO, SEM ESPAÇO)</label>
+      <input id="mainWaNumber" placeholder="5592..." />
+      <label>MENSAGEM PADRÃO</label>
+      <input id="mainWaMsg" />
+      <label>TEXTO DO BOTÃO (OPCIONAL)</label>
+      <input id="mainWaLabel" placeholder="FALAR NO WHATSAPP" />
     </div>
 
-    <div class="card" style="margin-top:14px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-        <strong>UNIDADES</strong>
-        <button class="btn primary" id="btnAddUnit" type="button">+ ADICIONAR UNIDADE</button>
+    <div class="card">
+      <h2 style="margin:0;font-size:15px">HERO (TEXTO PRINCIPAL)</h2>
+      <label>TÍTULO</label>
+      <input id="heroTitle" />
+      <label>TEXTO</label>
+      <textarea id="heroText"></textarea>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0;font-size:15px">UNIDADES</h2>
+      <div class="hint">ADICIONE QUANTAS UNIDADES QUISER. WHATSAPP: 55 + DDD + NÚMERO.</div>
+      <div id="units"></div>
+
+      <div class="btns">
+        <button id="addUnit">+ ADICIONAR UNIDADE</button>
       </div>
-      <div class="muted" style="margin-top:6px;">MAPS É OPCIONAL (SE VAZIO, O SITE GERA AUTOMATICAMENTE PELO ENDEREÇO).</div>
-
-      <div class="units" id="units"></div>
-
-      <div class="status" id="status"></div>
     </div>
   </div>
 
   <script>
-    const $ = (id) => document.getElementById(id);
-
-    const DEFAULT_DATA = {
-      brandName: "FARMA LIMA",
-      brandSub: "ENDEREÇOS • CONTATOS • WHATSAPP",
-      logoUrl: "/assets/logo-farmalima.png",
-      pillText: "DISK MEDICAÇÃO",
-      heroTitle: "BEM VINDO À FARMA LIMA",
-      heroDesc: "ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA. CLIQUE NO WHATSAPP PARA FALAR AGORA OU VEJA AS UNIDADES ABAIXO.",
-      heroCardTitle: "ENTREGA RÁPIDA",
-      heroCardSub: "CHAME NO WHATSAPP E RECEBA COM AGILIDADE",
-      globalWhatsapp: "5592999999999",
-      footerText: "© 2026 FARMA LIMA",
-      units: []
+    const DEFAULT = {
+      theme:{ bg:"#050608", text:"#EAF2F2", red:"#EC1F26", teal:"#34CCD1" },
+      brand:{ name:"FARMA LIMA", tagline:"ENDEREÇOS • CONTATOS • WHATSAPP", logoUrl:"/assets/logo-farmalima.png" },
+      hero:{ title:"BEM-VINDO À FARMA LIMA", text:"ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA." },
+      mainWhatsapp:{ number:"5592999999999", message:"OLÁ! QUERO INFORMAÇÕES DA FARMA LIMA.", label:"FALAR NO WHATSAPP" },
+      units:[]
     };
 
-    function setStatus(msg, ok=true){
-      $("status").textContent = msg;
-      $("status").style.color = ok ? "#b8ffd8" : "#ffb8b8";
-    }
+    const el = (id)=>document.getElementById(id);
+    const status = el("status");
+    const unitsWrap = el("units");
 
-    function createUnitItem(u = {}){
-      const wrap = document.createElement("div");
-      wrap.className = "unitItem";
-
-      wrap.innerHTML = `
-        <div class="row">
-          <div>
-            <label>NOME DA UNIDADE</label>
-            <input class="u_name" placeholder="CENTRO" value="${(u.name||"").toUpperCase()}">
+    function unitTemplate(u, idx){
+      return `
+        <div class="unit" data-idx="${idx}">
+          <div class="row">
+            <div><label>NOME</label><input data-k="name" value="${u.name||""}"></div>
+            <div><label>TIPO</label><input data-k="type" value="${u.type||"UNIDADE"}"></div>
           </div>
-          <div>
-            <label>OBS (OPCIONAL)</label>
-            <input class="u_note" placeholder="ATENDIMENTO RÁPIDO" value="${(u.note||"").toUpperCase()}">
-          </div>
-        </div>
 
-        <label>ENDEREÇO</label>
-        <input class="u_address" placeholder="AV LEONARDO MALCHER, N 783" value="${(u.address||"").toUpperCase()}">
-
-        <div class="row">
-          <div>
-            <label>WHATSAPP (EX: 5592...)</label>
-            <input class="u_whatsapp" placeholder="5592..." value="${(u.whatsapp||"").toUpperCase()}">
+          <div class="row">
+            <div><label>BADGE (EX: RED)</label><input data-k="badge" value="${u.badge||""}"></div>
+            <div><label>DESCRIÇÃO</label><input data-k="description" value="${u.description||""}"></div>
           </div>
-          <div>
-            <label>LINK MAPS (OPCIONAL)</label>
-            <input class="u_maps" placeholder="https://maps..." value="${(u.maps||"").toUpperCase()}">
-          </div>
-        </div>
 
-        <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:10px;">
-          <button class="btn danger u_remove" type="button">REMOVER</button>
+          <label>ENDEREÇO</label>
+          <input data-k="address" value="${u.address||""}">
+
+          <label>LINK MAPS (OPCIONAL)</label>
+          <input data-k="maps" value="${u.maps||""}">
+
+          <div class="row">
+            <div><label>WHATSAPP</label><input data-k="whatsapp" value="${u.whatsapp||""}"></div>
+            <div><label>MENSAGEM WHATSAPP</label><input data-k="wmsg" value="${u.wmsg||"OLÁ! QUERO INFORMAÇÕES."}"></div>
+          </div>
+
+          <div class="btns">
+            <button class="danger" onclick="removeUnit(${idx})">REMOVER UNIDADE</button>
+          </div>
         </div>
       `;
-
-      wrap.querySelector(".u_remove").addEventListener("click", () => wrap.remove());
-      return wrap;
     }
 
-    function collectData(){
-      const items = Array.from($("units").querySelectorAll(".unitItem"));
-
-      const units = items.map(el => ({
-        name: el.querySelector(".u_name").value.trim(),
-        note: el.querySelector(".u_note").value.trim(),
-        address: el.querySelector(".u_address").value.trim(),
-        whatsapp: el.querySelector(".u_whatsapp").value.trim(),
-        maps: el.querySelector(".u_maps").value.trim()
-      })).filter(u => u.name || u.address);
-
-      return {
-        brandName: $("brandName").value.trim(),
-        brandSub: $("brandSub").value.trim(),
-        logoUrl: $("logoUrl").value.trim(),
-        pillText: $("pillText").value.trim(),
-        heroTitle: $("heroTitle").value.trim(),
-        heroDesc: $("heroDesc").value.trim(),
-        heroCardTitle: $("heroCardTitle").value.trim(),
-        heroCardSub: $("heroCardSub").value.trim(),
-        globalWhatsapp: $("globalWhatsapp").value.trim(),
-        footerText: $("footerText").value.trim(),
-        units
-      };
+    function renderUnits(units){
+      unitsWrap.innerHTML = (units||[]).map((u,i)=>unitTemplate(u,i)).join("");
     }
 
-    function fillForm(data){
-      const d = Object.assign({}, DEFAULT_DATA, data || {});
-      $("brandName").value = (d.brandName||"").toUpperCase();
-      $("brandSub").value = (d.brandSub||"").toUpperCase();
-      $("logoUrl").value = (d.logoUrl||"/assets/logo-farmalima.png");
-      $("pillText").value = (d.pillText||"").toUpperCase();
-      $("heroTitle").value = (d.heroTitle||"").toUpperCase();
-      $("heroDesc").value = (d.heroDesc||"").toUpperCase();
-      $("heroCardTitle").value = (d.heroCardTitle||"").toUpperCase();
-      $("heroCardSub").value = (d.heroCardSub||"").toUpperCase();
-      $("globalWhatsapp").value = (d.globalWhatsapp||"").toUpperCase();
-      $("footerText").value = (d.footerText||"").toUpperCase();
+    function readUnitsFromDOM(){
+      const boxes = [...document.querySelectorAll(".unit")];
+      return boxes.map(box=>{
+        const obj = {};
+        [...box.querySelectorAll("input[data-k]")].forEach(inp=>{
+          obj[inp.dataset.k] = (inp.value || "").trim().toUpperCase();
+        });
+        return obj;
+      });
+    }
 
-      $("units").innerHTML = "";
-      (d.units || []).forEach(u => $("units").appendChild(createUnitItem(u)));
+    window.removeUnit = (idx)=>{
+      window.__data.units.splice(idx, 1);
+      renderUnits(window.__data.units);
+    };
 
-      if((d.units||[]).length === 0){
-        $("units").appendChild(createUnitItem({
-          name:"CENTRO",
-          note:"ATENDIMENTO RÁPIDO",
-          address:"AV LEONARDO MALCHER, N 783",
-          whatsapp:d.globalWhatsapp,
-          maps:""
-        }));
-      }
+    async function requireAuth(){
+      const r = await fetch("/api/me", { cache:"no-store" });
+      if(!r.ok) throw new Error("NOT_AUTH");
+      const j = await r.json().catch(()=>({}));
+      if(!j.ok) throw new Error("NOT_AUTH");
     }
 
     async function load(){
-      setStatus("CARREGANDO...", true);
+      status.textContent = "CARREGANDO…";
+      await requireAuth();
+
+      let data = DEFAULT;
       try{
-        const r = await fetch("/api/content", { cache: "no-store" });
-        const data = r.ok ? await r.json() : {};
-        fillForm(data);
-        setStatus("OK • DADOS CARREGADOS", true);
-      }catch(e){
-        fillForm(DEFAULT_DATA);
-        setStatus("NÃO CONSEGUI CARREGAR DA API. USANDO PADRÃO.", false);
-      }
+        const r = await fetch("/api/content", { cache:"no-store" });
+        if(r.ok){
+          const j = await r.json();
+          data = { ...DEFAULT, ...(j||{}) };
+        }
+      }catch(e){}
+
+      window.__data = data;
+
+      el("brandName").value = (data.brand?.name || "").toUpperCase();
+      el("brandTagline").value = (data.brand?.tagline || "").toUpperCase();
+      el("brandLogoUrl").value = (data.brand?.logoUrl || "").toUpperCase();
+
+      el("cBg").value = (data.theme?.bg || "").toUpperCase();
+      el("cText").value = (data.theme?.text || "").toUpperCase();
+      el("cRed").value = (data.theme?.red || "").toUpperCase();
+      el("cTeal").value = (data.theme?.teal || "").toUpperCase();
+
+      el("mainWaNumber").value = (data.mainWhatsapp?.number || "").toUpperCase();
+      el("mainWaMsg").value = (data.mainWhatsapp?.message || "").toUpperCase();
+      el("mainWaLabel").value = (data.mainWhatsapp?.label || "").toUpperCase();
+
+      el("heroTitle").value = (data.hero?.title || "").toUpperCase();
+      el("heroText").value = (data.hero?.text || "").toUpperCase();
+
+      renderUnits(data.units || []);
+      status.textContent = "PRONTO ✅";
     }
 
     async function save(){
-      const body = collectData();
-      setStatus("SALVANDO...", true);
+      status.textContent = "SALVANDO…";
+      await requireAuth();
 
-      try{
-        const r = await fetch("/api/content", {
-          method: "PUT",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify(body)
-        });
+      const data = window.__data;
 
-        if(!r.ok){
-          const t = await r.text();
-          setStatus("ERRO AO SALVAR: " + t, false);
-          return;
-        }
-        setStatus("SALVO ✅ (SITE ATUALIZA AO RECARREGAR)", true);
-      }catch(e){
-        setStatus("ERRO AO SALVAR: " + (e.message || e), false);
-      }
+      data.brand = {
+        name: el("brandName").value.trim().toUpperCase(),
+        tagline: el("brandTagline").value.trim().toUpperCase(),
+        logoUrl: el("brandLogoUrl").value.trim(),
+      };
+      data.theme = {
+        bg: el("cBg").value.trim(),
+        text: el("cText").value.trim(),
+        red: el("cRed").value.trim(),
+        teal: el("cTeal").value.trim(),
+      };
+      data.mainWhatsapp = {
+        number: el("mainWaNumber").value.trim(),
+        message: el("mainWaMsg").value.trim(),
+        label: el("mainWaLabel").value.trim(),
+      };
+      data.hero = {
+        title: el("heroTitle").value.trim().toUpperCase(),
+        text: el("heroText").value.trim().toUpperCase(),
+      };
+      data.units = readUnitsFromDOM();
+
+      const r = await fetch("/api/content", {
+        method:"POST",
+        headers: { "Content-Type":"application/json" },
+        body: JSON.stringify(data)
+      });
+
+      status.textContent = r.ok ? "✅ SALVO! ATUALIZE O SITE PRA VER." : "❌ ERRO AO SALVAR (SEM PERMISSÃO OU ERRO NA API).";
     }
 
-    $("btnAddUnit").addEventListener("click", () => $("units").appendChild(createUnitItem()));
-    $("btnReload").addEventListener("click", load);
-    $("btnSave").addEventListener("click", save);
-
-    $("btnLogout").addEventListener("click", async () => {
-      await fetch("/api/logout", { method:"POST" });
+    async function logout(){
+      // limpa cookie “na marra” criando um cookie expirado
+      document.cookie = "FL_ADMIN_SESSION=; Path=/; Max-Age=0";
       window.location.href = "/admin-login.html";
+    }
+
+    el("addUnit").addEventListener("click", ()=>{
+      window.__data.units.push({
+        name:"NOVA UNIDADE",
+        type:"UNIDADE",
+        badge:"RED",
+        description:"",
+        address:"",
+        maps:"",
+        whatsapp:"",
+        wmsg:"OLÁ! QUERO INFORMAÇÕES."
+      });
+      renderUnits(window.__data.units);
     });
 
-    load();
+    el("save").addEventListener("click", save);
+    el("reload").addEventListener("click", load);
+    el("logout").addEventListener("click", logout);
+
+    // se não estiver logado, manda pro login
+    (async ()=>{
+      try { await load(); }
+      catch(e){ window.location.href = "/admin-login.html"; }
+    })();
   </script>
 </body>
 </html>
