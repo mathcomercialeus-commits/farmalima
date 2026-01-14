@@ -1,34 +1,30 @@
 export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json();
-    const password = (body?.password || "").trim();
+    const password = body.password || "";
 
-    const correct = (env.ADMIN_PASSWORD || "").trim();
-    if (!correct) {
-      return new Response("ADMIN_PASSWORD não configurado no Cloudflare.", { status: 500 });
+    if (!env.ADMIN_PASSWORD) {
+      return new Response(
+        JSON.stringify({ error: "ADMIN_PASSWORD não configurado" }),
+        { status: 500 }
+      );
     }
 
-    if (password !== correct) {
-      return new Response("Senha inválida.", { status: 401 });
+    if (password !== env.ADMIN_PASSWORD) {
+      return new Response(
+        JSON.stringify({ error: "Senha incorreta" }),
+        { status: 401 }
+      );
     }
 
-    // Cookie simples (produção: pode reforçar depois)
-    const headers = new Headers();
-    headers.append(
-      "Set-Cookie",
-      [
-        "admin_session=ok",
-        "Path=/",
-        "HttpOnly",
-        "Secure",
-        "SameSite=Strict",
-        "Max-Age=86400" // 24h
-      ].join("; ")
+    return new Response(
+      JSON.stringify({ ok: true }),
+      { status: 200 }
     );
-
-    headers.set("Content-Type", "application/json");
-    return new Response(JSON.stringify({ ok: true }), { status: 200, headers });
   } catch (e) {
-    return new Response("Payload inválido.", { status: 400 });
+    return new Response(
+      JSON.stringify({ error: "Erro interno" }),
+      { status: 500 }
+    );
   }
 }
