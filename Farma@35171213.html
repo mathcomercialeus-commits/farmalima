@@ -4,285 +4,440 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ADMIN • FARMA LIMA</title>
+
   <style>
     :root{
-      --bg:#050608; --text:#EAF2F2; --muted:rgba(234,242,242,.65);
-      --card:rgba(255,255,255,.04); --border:rgba(255,255,255,.12);
-      --teal:#34CCD1; --red:#EC1F26;
-      --radius:16px;
+      --PRIMARY:#00E5D8;
+      --SECONDARY:#FF3B3B;
+      --DARK:#0B0F14;
+      --CARD:#121821;
+      --MUTED:#9CA3AF;
+      --WHITE:#FFFFFF;
+      --RADIUS:18px;
+      --BORDER: rgba(255,255,255,.10);
+      --SHADOW: 0 16px 50px rgba(0,0,0,.45);
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text)}
-    .wrap{max-width:1000px;margin:0 auto;padding:20px 14px 70px}
-    .top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    h1{margin:0;font-size:16px;letter-spacing:1px}
-    .hint{margin-top:8px;font-size:12px;color:var(--muted);line-height:1.4}
-    .card{border:1px solid var(--border);border-radius:var(--radius);padding:14px;background:var(--card);margin-top:12px}
-    label{display:block;margin-top:10px;font-size:12px;color:rgba(234,242,242,.7)}
-    input, textarea{
-      width:100%;margin-top:6px;padding:11px 12px;border-radius:12px;
-      border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.25);color:var(--text);outline:none;
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1100px 700px at 15% 10%, rgba(0,229,216,.18), transparent 55%),
+                  radial-gradient(1100px 700px at 85% 30%, rgba(255,59,59,.14), transparent 55%),
+                  var(--DARK);
+      color: var(--WHITE);
+      text-transform: uppercase;
+      letter-spacing:.6px;
     }
-    textarea{min-height:90px;resize:vertical}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media(max-width:820px){.row{grid-template-columns:1fr}}
-    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    button,a.btn{
-      border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);
-      color:var(--text);padding:10px 14px;border-radius:999px;font-weight:900;cursor:pointer;
-      text-decoration:none;display:inline-flex;align-items:center;justify-content:center;
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width: 1100px; margin: 0 auto; padding: 18px 14px 70px; }
+    .top{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding: 14px 14px;
+      border:1px solid var(--BORDER);
+      background: rgba(18,24,33,.65);
+      backdrop-filter: blur(10px);
+      border-radius: var(--RADIUS);
+      box-shadow: var(--SHADOW);
+      position: sticky;
+      top: 10px;
+      z-index: 9;
     }
-    button.primary{border-color:rgba(52,204,209,.45);background:rgba(52,204,209,.12)}
-    button.danger{border-color:rgba(236,31,38,.45);background:rgba(236,31,38,.10)}
-    .unit{border:1px dashed rgba(255,255,255,.18);border-radius:14px;padding:12px;margin-top:10px}
-    .status{margin-top:10px;font-size:12px;color:var(--muted)}
-    .status.ok{color:#b8ffd8}
-    .status.err{color:#ffb8b8}
+    .top strong{
+      font-weight: 1000;
+      letter-spacing: 1.8px;
+      font-size: 13px;
+    }
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+    .btn{
+      border:1px solid var(--BORDER);
+      background: rgba(255,255,255,.04);
+      color: var(--WHITE);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 1000;
+      letter-spacing: 1.2px;
+      cursor:pointer;
+      transition: .18s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      user-select:none;
+      min-height: 42px;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.20); }
+    .btn.primary{ background: linear-gradient(180deg, rgba(0,229,216,1), rgba(0,180,170,1)); color:#00110f; border:none; }
+    .btn.danger{ background: linear-gradient(180deg, rgba(255,59,59,1), rgba(200,30,30,1)); border:none; }
+    .btn.ghost{ background: rgba(255,255,255,.03); }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .card{
+      border:1px solid var(--BORDER);
+      background: rgba(18,24,33,.62);
+      border-radius: var(--RADIUS);
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      padding: 16px;
+    }
+    .cardTitle{
+      font-weight: 1000;
+      letter-spacing: 1.6px;
+      font-size: 13px;
+      margin: 0 0 6px;
+    }
+    .muted{
+      color: var(--MUTED);
+      font-size: 11px;
+      letter-spacing:1px;
+      text-transform:none;
+      line-height:1.35;
+    }
+    label{
+      display:block;
+      font-size: 11px;
+      color: rgba(255,255,255,.70);
+      margin: 10px 0 6px;
+      letter-spacing:1.2px;
+    }
+    input, textarea, select{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      color: var(--WHITE);
+      outline:none;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    textarea{ min-height: 92px; resize: vertical; text-transform:none; letter-spacing: .6px; font-weight:700; }
+    .row{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .units{ display:flex; flex-direction:column; gap: 12px; margin-top: 12px; }
+    .unitItem{
+      border:1px dashed rgba(255,255,255,.18);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .unitTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .unitTop strong{ font-weight: 1000; font-size: 12px; letter-spacing:1.4px; }
+    .unitBtns{ display:flex; gap:10px; flex-wrap:wrap; }
+    .unitBtns .btn{ padding: 9px 12px; min-height: 40px; }
+
+    .status{
+      margin-top: 12px;
+      font-size: 12px;
+      letter-spacing: .4px;
+      text-transform:none;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      line-height:1.35;
+      word-break: break-word;
+    }
+    .ok{ color:#b8ffd8; border-color: rgba(184,255,216,.25); }
+    .bad{ color:#ffb8b8; border-color: rgba(255,184,184,.25); }
+
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+      .row{ grid-template-columns: 1fr; }
+      .top{ position: static; }
+      .btn{ width: 100%; }
+      .actions{ width: 100%; }
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="top">
-      <h1>ADMIN • FARMA LIMA (SEM LOGIN)</h1>
-      <div class="btns" style="margin:0">
-        <a class="btn" href="/" target="_blank" rel="noopener">VER SITE</a>
-        <button class="primary" id="save">SALVAR</button>
-        <button id="reload">RECARREGAR</button>
+      <strong>ADMIN • FARMA LIMA</strong>
+      <div class="actions">
+        <a class="btn ghost" href="/" target="_blank" rel="noopener">VER SITE</a>
+        <button class="btn ghost" id="btnTest">TESTAR API</button>
+        <button class="btn ghost" id="btnReload">RECARREGAR</button>
+        <button class="btn primary" id="btnSave">SALVAR</button>
       </div>
     </div>
 
-    <div class="hint">
-      ⚠️ ESTE ADMIN ESTÁ ABERTO (SEM SENHA). USE SÓ PRA AJUSTAR AGORA E DEPOIS A GENTE BLOQUEIA DE NOVO.
-    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="cardTitle">MARCA</div>
+        <div class="muted">EDITE OS TEXTOS E A LOGO. USE /ASSETS/LOGO-FARMALIMA.PNG</div>
 
-    <div class="card">
-      <h2 style="margin:0;font-size:14px">MARCA</h2>
-      <label>NOME</label><input id="brandName" />
-      <label>SLOGAN</label><input id="brandTagline" />
-      <label>LOGO (URL/CAMINHO) EX: /assets/logo-farmalima.png</label><input id="brandLogoUrl" />
-    </div>
+        <label>NOME (TOPO)</label>
+        <input id="brandName" placeholder="FARMA LIMA" />
 
-    <div class="card">
-      <h2 style="margin:0;font-size:14px">TEMA (CORES)</h2>
-      <div class="row">
-        <div><label>FUNDO</label><input id="cBg" placeholder="#050608"></div>
-        <div><label>TEXTO</label><input id="cText" placeholder="#EAF2F2"></div>
+        <label>SUBTÍTULO (TOPO)</label>
+        <input id="brandSub" placeholder="ENDEREÇOS • CONTATOS • WHATSAPP" />
+
+        <label>LOGO (URL / CAMINHO)</label>
+        <input id="logoUrl" placeholder="/assets/logo-farmalima.png" />
+
+        <label>TEXTO DO PILL</label>
+        <input id="pillText" placeholder="DISK MEDICAÇÃO" />
+
+        <label>WHATSAPP GLOBAL (55+DDD+NÚMERO)</label>
+        <input id="globalWhatsapp" placeholder="5592..." />
+
+        <label>FOOTER</label>
+        <input id="footerText" placeholder="© 2026 FARMA LIMA" />
       </div>
-      <div class="row">
-        <div><label>VERMELHO</label><input id="cRed" placeholder="#EC1F26"></div>
-        <div><label>CIANO</label><input id="cTeal" placeholder="#34CCD1"></div>
-      </div>
-    </div>
 
-    <div class="card">
-      <h2 style="margin:0;font-size:14px">WHATSAPP PRINCIPAL</h2>
-      <label>NÚMERO (55 + DDD + NÚMERO)</label><input id="mainWaNumber" placeholder="5592..." />
-      <label>MENSAGEM PADRÃO</label><input id="mainWaMsg" />
-      <label>TEXTO DO BOTÃO</label><input id="mainWaLabel" placeholder="FALAR NO WHATSAPP" />
-    </div>
+      <div class="card">
+        <div class="cardTitle">HERO</div>
+        <div class="muted">TEXTO PRINCIPAL DA PÁGINA</div>
 
-    <div class="card">
-      <h2 style="margin:0;font-size:14px">HERO</h2>
-      <label>TÍTULO</label><input id="heroTitle" />
-      <label>TEXTO</label><textarea id="heroText"></textarea>
-    </div>
+        <label>TÍTULO</label>
+        <input id="heroTitle" placeholder="BEM VINDO À FARMA LIMA" />
 
-    <div class="card">
-      <h2 style="margin:0;font-size:14px">UNIDADES</h2>
-      <div class="hint">ADICIONE QUANTAS QUISER. WHATSAPP = 55+DDD+NÚMERO.</div>
-      <div id="units"></div>
+        <label>DESCRIÇÃO</label>
+        <textarea id="heroDesc" placeholder="ATENDIMENTO RÁPIDO..."></textarea>
 
-      <div class="btns">
-        <button id="addUnit">+ ADICIONAR UNIDADE</button>
+        <label>TÍTULO CARD</label>
+        <input id="heroCardTitle" placeholder="ENTREGA RÁPIDA" />
+
+        <label>SUBTÍTULO CARD</label>
+        <input id="heroCardSub" placeholder="CHAME NO WHATSAPP..." />
       </div>
     </div>
 
-    <div class="card">
-      <div class="status" id="status">PRONTO.</div>
+    <div class="card" style="margin-top:14px;">
+      <div class="unitTop">
+        <div>
+          <div class="cardTitle">UNIDADES</div>
+          <div class="muted">ADICIONE / REMOVA. SE MAPS FICAR VAZIO, O SITE GERA AUTOMÁTICO PELO ENDEREÇO.</div>
+        </div>
+        <div class="unitBtns">
+          <button class="btn primary" id="btnAddUnit">+ ADICIONAR</button>
+        </div>
+      </div>
+
+      <div class="units" id="units"></div>
+
+      <div id="status" class="status">PRONTO.</div>
     </div>
   </div>
 
   <script>
-    const DEFAULT = {
-      theme:{ bg:"#050608", text:"#EAF2F2", red:"#EC1F26", teal:"#34CCD1" },
-      brand:{ name:"FARMA LIMA", tagline:"ENDEREÇOS • CONTATOS • WHATSAPP", logoUrl:"/assets/logo-farmalima.png" },
-      hero:{ title:"BEM-VINDO À FARMA LIMA", text:"ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA." },
-      mainWhatsapp:{ number:"5592999999999", message:"OLÁ! QUERO INFORMAÇÕES DA FARMA LIMA.", label:"FALAR NO WHATSAPP" },
-      units:[]
+    const $ = (id) => document.getElementById(id);
+
+    // ✅ DADOS PADRÃO (compatível com seu site moderno)
+    const DEFAULT_DATA = {
+      brandName: "FARMA LIMA",
+      brandSub: "ENDEREÇOS • CONTATOS • WHATSAPP",
+      logoUrl: "/assets/logo-farmalima.png",
+      pillText: "DISK MEDICAÇÃO",
+      heroTitle: "BEM VINDO À FARMA LIMA",
+      heroDesc: "ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA. CLIQUE NO WHATSAPP PARA FALAR AGORA OU VEJA AS UNIDADES ABAIXO.",
+      heroCardTitle: "ENTREGA RÁPIDA",
+      heroCardSub: "CHAME NO WHATSAPP E RECEBA COM AGILIDADE",
+      globalWhatsapp: "5592999999999",
+      footerText: "© 2026 FARMA LIMA",
+      units: []
     };
 
-    const el = (id)=>document.getElementById(id);
-    const status = el("status");
-    const unitsWrap = el("units");
-
-    function setStatus(msg, type){
-      status.textContent = msg;
-      status.className = "status " + (type || "");
+    function setStatus(msg, ok=true){
+      const s = $("status");
+      s.classList.remove("ok","bad");
+      s.classList.add(ok ? "ok" : "bad");
+      s.textContent = msg;
     }
 
-    function unitTemplate(u, idx){
-      return `
-        <div class="unit" data-idx="${idx}">
-          <div class="row">
-            <div>
-              <label>NOME</label>
-              <input data-k="name" value="${u.name||""}">
-            </div>
-            <div>
-              <label>TIPO</label>
-              <input data-k="type" value="${u.type||"UNIDADE"}">
-            </div>
+    function normalizeUpper(v){
+      return (v ?? "").toString().trim().toUpperCase();
+    }
+
+    function createUnitItem(u = {}){
+      const wrap = document.createElement("div");
+      wrap.className = "unitItem";
+
+      wrap.innerHTML = `
+        <div class="unitTop">
+          <strong>UNIDADE</strong>
+          <div class="unitBtns">
+            <button class="btn danger u_remove" type="button">REMOVER</button>
           </div>
+        </div>
 
-          <div class="row">
-            <div>
-              <label>BADGE (EX: red OU VAZIO)</label>
-              <input data-k="badge" value="${u.badge||"red"}">
-            </div>
-            <div>
-              <label>DESCRIÇÃO</label>
-              <input data-k="description" value="${u.description||""}">
-            </div>
+        <div class="row">
+          <div>
+            <label>NOME</label>
+            <input class="u_name" placeholder="CENTRO" value="${normalizeUpper(u.name)}" />
           </div>
-
-          <label>ENDEREÇO</label>
-          <input data-k="address" value="${u.address||""}">
-
-          <label>LINK MAPS (OPCIONAL)</label>
-          <input data-k="maps" value="${u.maps||""}">
-
-          <div class="row">
-            <div>
-              <label>WHATSAPP</label>
-              <input data-k="whatsapp" value="${u.whatsapp||""}">
-            </div>
-            <div>
-              <label>MENSAGEM WHATSAPP</label>
-              <input data-k="wmsg" value="${u.wmsg||"OLÁ! QUERO INFORMAÇÕES."}">
-            </div>
+          <div>
+            <label>OBS (OPCIONAL)</label>
+            <input class="u_note" placeholder="ATENDIMENTO RÁPIDO" value="${normalizeUpper(u.note)}" />
           </div>
+        </div>
 
-          <div class="btns">
-            <button class="danger" type="button" data-remove="${idx}">REMOVER</button>
+        <label>ENDEREÇO</label>
+        <input class="u_address" placeholder="AV LEONARDO MALCHER, N 783" value="${normalizeUpper(u.address)}" />
+
+        <div class="row">
+          <div>
+            <label>WHATSAPP (55+DDD+NÚMERO)</label>
+            <input class="u_whatsapp" placeholder="5592..." value="${normalizeUpper(u.whatsapp)}" />
+          </div>
+          <div>
+            <label>LINK MAPS (OPCIONAL)</label>
+            <input class="u_maps" placeholder="https://maps..." value="${(u.maps ?? "").toString().trim()}" />
           </div>
         </div>
       `;
+
+      wrap.querySelector(".u_remove").addEventListener("click", () => wrap.remove());
+      return wrap;
     }
 
-    function renderUnits(units){
-      unitsWrap.innerHTML = (units || []).map((u,i)=>unitTemplate(u,i)).join("");
-      // bind remove
-      [...document.querySelectorAll("button[data-remove]")].forEach(btn=>{
-        btn.addEventListener("click", ()=>{
-          const idx = Number(btn.dataset.remove);
-          window.__data.units.splice(idx, 1);
-          renderUnits(window.__data.units);
-        });
-      });
+    function fillForm(data){
+      const d = Object.assign({}, DEFAULT_DATA, data || {});
+      $("brandName").value = normalizeUpper(d.brandName);
+      $("brandSub").value = normalizeUpper(d.brandSub);
+      $("logoUrl").value = (d.logoUrl ?? "").toString().trim();
+      $("pillText").value = normalizeUpper(d.pillText);
+      $("globalWhatsapp").value = normalizeUpper(d.globalWhatsapp);
+      $("footerText").value = normalizeUpper(d.footerText);
+
+      $("heroTitle").value = normalizeUpper(d.heroTitle);
+      $("heroDesc").value = (d.heroDesc ?? "").toString(); // sem upper pra leitura
+      $("heroCardTitle").value = normalizeUpper(d.heroCardTitle);
+      $("heroCardSub").value = normalizeUpper(d.heroCardSub);
+
+      $("units").innerHTML = "";
+      const units = Array.isArray(d.units) ? d.units : [];
+      if(units.length){
+        units.forEach(u => $("units").appendChild(createUnitItem(u)));
+      }else{
+        $("units").appendChild(createUnitItem({
+          name:"CENTRO",
+          note:"ATENDIMENTO RÁPIDO",
+          address:"AV LEONARDO MALCHER, N 783",
+          whatsapp:d.globalWhatsapp,
+          maps:""
+        }));
+      }
     }
 
-    function readUnitsFromDOM(){
-      const boxes = [...document.querySelectorAll(".unit")];
-      return boxes.map(box=>{
-        const obj = {};
-        [...box.querySelectorAll("input[data-k]")].forEach(inp=>{
-          obj[inp.dataset.k] = inp.value.trim();
-        });
-        return obj;
-      });
+    function collectData(){
+      const items = Array.from($("units").querySelectorAll(".unitItem"));
+
+      const units = items.map(el => ({
+        name: normalizeUpper(el.querySelector(".u_name").value),
+        note: normalizeUpper(el.querySelector(".u_note").value),
+        address: normalizeUpper(el.querySelector(".u_address").value),
+        whatsapp: (el.querySelector(".u_whatsapp").value || "").replace(/\D/g,""),
+        maps: (el.querySelector(".u_maps").value || "").trim()
+      })).filter(u => u.name || u.address);
+
+      return {
+        brandName: normalizeUpper($("brandName").value),
+        brandSub: normalizeUpper($("brandSub").value),
+        logoUrl: ($("logoUrl").value || "").trim(),
+        pillText: normalizeUpper($("pillText").value),
+        heroTitle: normalizeUpper($("heroTitle").value),
+        heroDesc: ($("heroDesc").value || "").trim(),
+        heroCardTitle: normalizeUpper($("heroCardTitle").value),
+        heroCardSub: normalizeUpper($("heroCardSub").value),
+        globalWhatsapp: ($("globalWhatsapp").value || "").replace(/\D/g,""),
+        footerText: normalizeUpper($("footerText").value),
+        units
+      };
+    }
+
+    async function apiGet(){
+      const r = await fetch("/api/content", { cache: "no-store" });
+      const txt = await r.text();
+      return { r, txt };
     }
 
     async function load(){
-      setStatus("CARREGANDO…");
-      let data = DEFAULT;
+      setStatus("CARREGANDO...", true);
       try{
-        const r = await fetch("/api/content", { cache:"no-store" });
-        if (r.ok) {
-          const apiData = await r.json();
-          // merge simples
-          data = { ...DEFAULT, ...apiData };
-          data.theme = { ...DEFAULT.theme, ...(apiData.theme||{}) };
-          data.brand = { ...DEFAULT.brand, ...(apiData.brand||{}) };
-          data.hero = { ...DEFAULT.hero, ...(apiData.hero||{}) };
-          data.mainWhatsapp = { ...DEFAULT.mainWhatsapp, ...(apiData.mainWhatsapp||{}) };
-          data.units = apiData.units || DEFAULT.units;
+        const { r, txt } = await apiGet();
+        if(!r.ok){
+          setStatus(`ERRO AO CARREGAR • HTTP ${r.status}\n${txt}`, false);
+          fillForm(DEFAULT_DATA);
+          return;
         }
-      }catch(e){}
-      window.__data = data;
+        let data = {};
+        try{ data = JSON.parse(txt || "{}"); }catch(e){ data = {}; }
+        fillForm(Object.keys(data).length ? data : DEFAULT_DATA);
+        setStatus("OK • DADOS CARREGADOS", true);
+      }catch(e){
+        fillForm(DEFAULT_DATA);
+        setStatus("NÃO CONSEGUI ACESSAR /API/CONTENT. VERIFIQUE SE A FUNCTION EXISTE.", false);
+      }
+    }
 
-      el("brandName").value = (data.brand.name||"").toUpperCase();
-      el("brandTagline").value = (data.brand.tagline||"").toUpperCase();
-      el("brandLogoUrl").value = (data.brand.logoUrl||"");
-
-      el("cBg").value = (data.theme.bg||"");
-      el("cText").value = (data.theme.text||"");
-      el("cRed").value = (data.theme.red||"");
-      el("cTeal").value = (data.theme.teal||"");
-
-      el("mainWaNumber").value = (data.mainWhatsapp.number||"");
-      el("mainWaMsg").value = (data.mainWhatsapp.message||"").toUpperCase();
-      el("mainWaLabel").value = (data.mainWhatsapp.label||"").toUpperCase();
-
-      el("heroTitle").value = (data.hero.title||"").toUpperCase();
-      el("heroText").value = (data.hero.text||"").toUpperCase();
-
-      renderUnits(data.units || []);
-      setStatus("PRONTO ✅", "ok");
+    async function testApi(){
+      setStatus("TESTANDO API...", true);
+      try{
+        const { r, txt } = await apiGet();
+        if(!r.ok){
+          setStatus(`API FALHOU • HTTP ${r.status}\n${txt}`, false);
+          return;
+        }
+        setStatus("API OK ✅ /API/CONTENT RESPONDEU", true);
+      }catch(e){
+        setStatus("API NÃO RESPONDE ❌ (OU TIMEOUT)", false);
+      }
     }
 
     async function save(){
-      setStatus("SALVANDO…");
-      const data = window.__data;
+      setStatus("SALVANDO...", true);
+      const body = collectData();
 
-      data.brand = {
-        name: el("brandName").value.trim(),
-        tagline: el("brandTagline").value.trim(),
-        logoUrl: el("brandLogoUrl").value.trim(),
-      };
-      data.theme = {
-        bg: el("cBg").value.trim(),
-        text: el("cText").value.trim(),
-        red: el("cRed").value.trim(),
-        teal: el("cTeal").value.trim(),
-      };
-      data.mainWhatsapp = {
-        number: el("mainWaNumber").value.trim(),
-        message: el("mainWaMsg").value.trim(),
-        label: el("mainWaLabel").value.trim(),
-      };
-      data.hero = {
-        title: el("heroTitle").value.trim(),
-        text: el("heroText").value.trim(),
-      };
-      data.units = readUnitsFromDOM();
+      try{
+        const r = await fetch("/api/content", {
+          method: "PUT", // ✅ alinhado com sua API
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
 
-      const r = await fetch("/api/content", {
-        method:"PUT",
-        headers: { "Content-Type":"application/json" },
-        body: JSON.stringify(data)
-      });
+        const txt = await r.text();
 
-      if (r.ok) setStatus("SALVO ✅ ATUALIZE O SITE.", "ok");
-      else setStatus("ERRO ❌ AO SALVAR. ABRA /api/content E VEJA SE A API RESPONDE.", "err");
+        if(!r.ok){
+          setStatus(`ERRO AO SALVAR • HTTP ${r.status}\n${txt}`, false);
+          return;
+        }
+
+        setStatus("SALVO ✅ ATUALIZE O SITE PARA VER.", true);
+      }catch(e){
+        setStatus("ERRO AO SALVAR ❌ (FALHA DE REDE OU /API/CONTENT INEXISTENTE)", false);
+      }
     }
 
-    el("addUnit").addEventListener("click", ()=>{
-      window.__data.units.push({
+    // ✅ eventos
+    $("btnAddUnit").addEventListener("click", () => {
+      $("units").appendChild(createUnitItem({
         name:"NOVA UNIDADE",
-        type:"UNIDADE",
-        badge:"red",
-        description:"",
+        note:"",
         address:"",
-        maps:"",
-        whatsapp:"",
-        wmsg:"OLÁ! QUERO INFORMAÇÕES."
-      });
-      renderUnits(window.__data.units);
+        whatsapp:$("globalWhatsapp").value.replace(/\D/g,""),
+        maps:""
+      }));
+      setStatus("UNIDADE ADICIONADA ✅", true);
     });
 
-    el("save").addEventListener("click", save);
-    el("reload").addEventListener("click", load);
+    $("btnReload").addEventListener("click", load);
+    $("btnSave").addEventListener("click", save);
+    $("btnTest").addEventListener("click", testApi);
 
+    // init
     load();
   </script>
 </body>
