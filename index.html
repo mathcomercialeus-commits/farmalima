@@ -2,129 +2,171 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0B0F14" />
   <title>FARMA LIMA</title>
 
   <style>
     :root{
-      --BG:#0B0F14;
-      --TEXT:#FFFFFF;
-      --PRIMARY:#00E5D8;   /* TEAL */
-      --SECONDARY:#FF3B3B; /* RED */
+      --PRIMARY:#00E5D8;
+      --SECONDARY:#FF3B3B;
+      --DARK:#0B0F14;
       --CARD:#121821;
       --MUTED:#9CA3AF;
+      --WHITE:#FFFFFF;
       --RADIUS:18px;
-      --BORDER: rgba(255,255,255,.08);
-      --SHADOW: 0 20px 60px rgba(0,0,0,.45);
+      --BORDER: rgba(255,255,255,.10);
+      --SHADOW: 0 18px 60px rgba(0,0,0,.50);
+
+      --PAD: 16px;
+      --MAX: 1120px;
+
+      --BTN_H: 46px; /* bom pra dedo */
+      --BTN_R: 999px;
     }
 
     *{ box-sizing:border-box; }
+    html, body{ height:100%; }
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background:
-        radial-gradient(1100px 700px at 15% 10%, color-mix(in srgb, var(--PRIMARY) 18%, transparent), transparent 55%),
-        radial-gradient(1100px 700px at 85% 30%, color-mix(in srgb, var(--SECONDARY) 14%, transparent), transparent 55%),
-        var(--BG);
-      color: var(--TEXT);
+        radial-gradient(1100px 700px at 15% 10%, rgba(0,229,216,.18), transparent 55%),
+        radial-gradient(1100px 700px at 85% 30%, rgba(255,59,59,.14), transparent 55%),
+        var(--DARK);
+      color: var(--WHITE);
       text-transform: uppercase;
       letter-spacing: .6px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     a{ color:inherit; text-decoration:none; }
+    img{ max-width:100%; display:block; }
 
     .wrap{
-      max-width: 1120px;
+      max-width: var(--MAX);
       margin: 0 auto;
-      padding: 22px 16px 80px;
+      padding: calc(var(--PAD) + env(safe-area-inset-top)) var(--PAD)
+               calc(88px + env(safe-area-inset-bottom));
     }
 
-    /* Topbar */
+    /* TOPBAR (MOBILE FIRST) */
     .topbar{
       display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      padding: 14px 16px;
+      flex-direction: column;
+      gap: 12px;
+      padding: 14px;
       border: 1px solid var(--BORDER);
       background: rgba(18,24,33,.65);
       backdrop-filter: blur(10px);
       border-radius: var(--RADIUS);
       box-shadow: var(--SHADOW);
     }
+
     .brand{
       display:flex;
       align-items:center;
-      gap:12px;
-      min-width: 240px;
+      gap: 12px;
+      min-width: 0;
     }
-    .brand img{
-      width: 42px;
-      height: 42px;
+
+    .brandLogo{
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      padding: 8px;
+      display:grid;
+      place-items:center;
+      flex: 0 0 auto;
+    }
+
+    .brandLogo img{
+      width: 100%;
+      height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 8px 14px rgba(0,0,0,.35));
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
     }
-    .brand .title{
+
+    .brandText{
+      min-width: 0;
       display:flex;
-      flex-direction:column;
-      line-height:1.05;
+      flex-direction: column;
+      gap: 4px;
+      line-height: 1.05;
     }
-    .brand .title strong{
-      font-weight: 900;
-      letter-spacing: 1.2px;
+    .brandText strong{
+      font-weight: 1000;
+      letter-spacing: 1.6px;
       font-size: 15px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .brand .title span{
+    .brandText span{
       color: var(--MUTED);
       font-size: 11px;
       letter-spacing: 1px;
+      /* em mobile, deixa cortar bonitinho */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .actions{
       display:flex;
-      align-items:center;
-      gap:10px;
+      gap: 10px;
       flex-wrap: wrap;
-      justify-content: flex-end;
+      align-items:center;
+      justify-content: flex-start;
     }
 
-    .btn{
-      border:1px solid var(--BORDER);
-      background: rgba(255,255,255,.04);
-      color: var(--TEXT);
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-weight: 900;
-      letter-spacing: 1.2px;
-      cursor:pointer;
-      transition: .18s ease;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      user-select:none;
-    }
-    .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.16); }
-    .btn.primary{
-      background: linear-gradient(180deg, color-mix(in srgb, var(--PRIMARY) 100%, #000 0%), color-mix(in srgb, var(--PRIMARY) 70%, #000 30%));
-      color:#00110f;
-      border: none;
-    }
     .pill{
       font-size: 11px;
       padding: 6px 10px;
       border-radius: 999px;
-      border: 1px solid color-mix(in srgb, var(--PRIMARY) 35%, transparent);
-      background: color-mix(in srgb, var(--PRIMARY) 10%, transparent);
+      border: 1px solid rgba(0,229,216,.35);
+      background: rgba(0,229,216,.10);
       color: var(--PRIMARY);
-      font-weight: 900;
+      font-weight: 1000;
       letter-spacing: 1.1px;
       display:inline-flex;
       align-items:center;
       gap:8px;
     }
 
-    /* Hero */
+    .btn{
+      height: var(--BTN_H);
+      padding: 0 14px;
+      border-radius: var(--BTN_R);
+      border:1px solid var(--BORDER);
+      background: rgba(255,255,255,.04);
+      color: var(--WHITE);
+      font-weight: 1000;
+      letter-spacing: 1.2px;
+      cursor:pointer;
+      transition: transform .18s ease, border-color .18s ease, filter .18s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      user-select:none;
+      flex: 1 1 160px; /* mobile: vira botão “grande” */
+      min-width: 0;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.18); }
+    .btn:active{ transform: translateY(0px); filter: brightness(.95); }
+
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(0,229,216,1), rgba(0,180,170,1));
+      color:#00110f;
+      border:none;
+    }
+
+    /* HERO */
     .hero{
-      margin-top: 16px;
+      margin-top: 14px;
       border-radius: var(--RADIUS);
       border: 1px solid var(--BORDER);
       background: rgba(18,24,33,.55);
@@ -133,103 +175,114 @@
       overflow:hidden;
       position:relative;
     }
-    .hero .wave{
+    .wave{
       position:absolute;
       inset: -140px -140px auto -140px;
       height: 320px;
       pointer-events:none;
-      opacity:.9;
+      opacity:.95;
     }
-    .hero .wave svg{ width:100%; height:100%; display:block; }
+    .wave svg{ width:100%; height:100%; display:block; }
+
     .heroInner{
       display:grid;
-      grid-template-columns: 1.3fr .9fr;
-      gap: 18px;
-      padding: 26px;
-      align-items: center;
+      grid-template-columns: 1fr; /* mobile first */
+      gap: 14px;
+      padding: 18px;
       position:relative;
-      z-index: 2;
+      z-index:2;
     }
     .hero h1{
       margin: 0 0 10px;
-      font-size: clamp(22px, 3.6vw, 38px);
+      font-size: clamp(22px, 6vw, 40px);
       font-weight: 1000;
       letter-spacing: 2px;
+      line-height: 1.05;
     }
     .hero p{
       margin:0;
       color: var(--MUTED);
-      line-height: 1.4;
+      line-height: 1.45;
       font-size: 13px;
       letter-spacing: 1px;
-      text-transform: uppercase; /* VOCÊ PEDIU CAIXA ALTA */
+      text-transform: none; /* leitura melhor em mobile */
     }
+
     .heroCard{
       border: 1px solid rgba(255,255,255,.10);
-      background: linear-gradient(135deg, color-mix(in srgb, var(--PRIMARY) 10%, transparent), color-mix(in srgb, var(--SECONDARY) 8%, transparent));
+      background: linear-gradient(135deg, rgba(0,229,216,.10), rgba(255,59,59,.08));
       border-radius: var(--RADIUS);
-      padding: 16px;
+      padding: 14px;
       display:flex;
       gap: 14px;
       align-items:center;
       justify-content: space-between;
-      min-height: 130px;
+      min-height: 120px;
     }
     .heroCard .mini{
       display:flex;
       flex-direction:column;
       gap:6px;
+      min-width: 0;
     }
     .heroCard .mini strong{
       font-size: 13px;
       font-weight: 1000;
       letter-spacing: 1.4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .heroCard .mini span{
       color: var(--MUTED);
       font-size: 11px;
       letter-spacing: 1px;
-      text-transform:uppercase;
+      text-transform:none;
+      line-height: 1.2;
     }
     .heroCard img{
-      width: 120px;
-      height: 70px;
+      width: 110px;
+      height: 64px;
       object-fit: contain;
-      opacity: .95;
+      opacity: .98;
       filter: drop-shadow(0 14px 24px rgba(0,0,0,.35));
+      flex: 0 0 auto;
     }
 
-    /* Units */
+    /* SECTION HEAD */
     .sectionHead{
       display:flex;
-      align-items:end;
+      align-items:flex-end;
       justify-content:space-between;
-      gap:16px;
-      margin: 18px 2px 10px;
+      gap:12px;
+      margin: 16px 2px 10px;
+      flex-wrap: wrap;
     }
     .sectionHead h2{
       margin:0;
-      font-size: 16px;
+      font-size: 15px;
       letter-spacing: 2px;
       font-weight: 1000;
     }
     .sectionHead small{
       color: var(--MUTED);
       letter-spacing: 1px;
-      text-transform:uppercase;
+      text-transform:none;
+      font-size: 11px;
     }
 
+    /* GRID (responsivo de verdade) */
     .grid{
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+      grid-template-columns: 1fr; /* mobile */
+      gap: 12px;
     }
 
     .unit{
       background: rgba(18,24,33,.62);
       border:1px solid var(--BORDER);
       border-radius: var(--RADIUS);
-      padding: 16px;
+      padding: 14px;
       box-shadow: 0 14px 40px rgba(0,0,0,.35);
       transition:.18s ease;
       position:relative;
@@ -238,15 +291,15 @@
     .unit:before{
       content:"";
       position:absolute;
-      inset:-60px -60px auto auto;
-      width: 220px;
-      height: 220px;
-      background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--PRIMARY) 18%, transparent), transparent 60%);
+      inset:-70px -70px auto auto;
+      width: 240px;
+      height: 240px;
+      background: radial-gradient(circle at 30% 30%, rgba(0,229,216,.18), transparent 60%);
       transform: rotate(18deg);
     }
     .unit:hover{
-      transform: translateY(-3px);
-      border-color: color-mix(in srgb, var(--PRIMARY) 35%, transparent);
+      transform: translateY(-2px);
+      border-color: rgba(0,229,216,.35);
     }
 
     .unitHead{
@@ -261,25 +314,31 @@
       font-weight: 1000;
       letter-spacing: 1.6px;
       font-size: 14px;
+      min-width: 0;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .tag{
       font-size: 10px;
       padding: 6px 10px;
       border-radius: 999px;
-      border: 1px solid color-mix(in srgb, var(--SECONDARY) 35%, transparent);
-      background: color-mix(in srgb, var(--SECONDARY) 10%, transparent);
+      border: 1px solid rgba(255,59,59,.35);
+      background: rgba(255,59,59,.10);
       color: var(--SECONDARY);
       font-weight: 1000;
       letter-spacing: 1.2px;
       white-space:nowrap;
+      flex: 0 0 auto;
     }
+
     .unit p{
       margin: 10px 0 12px;
       color: var(--MUTED);
       font-size: 11px;
       letter-spacing: 1px;
       line-height: 1.4;
-      text-transform:uppercase;
+      text-transform:none;
       position:relative;
       z-index:2;
     }
@@ -304,102 +363,124 @@
       font-size: 12px;
       letter-spacing: 1.3px;
       font-weight: 1000;
+      line-height: 1.15;
+      word-break: break-word;
     }
 
     .rowBtns{
-      display:flex;
-      gap:10px;
-      flex-wrap: wrap;
+      display:grid;
+      grid-template-columns: 1fr 1fr; /* mobile: 2 botões lado a lado */
+      gap: 10px;
       position:relative;
       z-index:2;
     }
     .rowBtns .btn{
-      padding: 10px 12px;
-      flex: 1;
-      justify-content:center;
-      min-width: 160px;
+      height: var(--BTN_H);
+      padding: 0 10px;
+      flex: unset;
+      min-width: 0;
     }
 
-    /* WhatsApp floating */
+    /* FLOAT WHATSAPP */
     .float{
       position: fixed;
-      right: 16px;
-      bottom: 16px;
+      right: calc(14px + env(safe-area-inset-right));
+      bottom: calc(14px + env(safe-area-inset-bottom));
       z-index: 999;
-      display:flex;
+      display:none;
       gap:10px;
       align-items:center;
     }
     .float a{
+      height: 52px;
       display:inline-flex;
       align-items:center;
       gap:10px;
       border-radius: 999px;
-      padding: 12px 14px;
+      padding: 0 16px;
       font-weight: 1000;
       letter-spacing: 1.2px;
       box-shadow: 0 18px 50px rgba(0,0,0,.45);
-      border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, color-mix(in srgb, var(--PRIMARY) 100%, #000 0%), color-mix(in srgb, var(--PRIMARY) 70%, #000 30%));
+      border:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(0,229,216,1), rgba(0,180,170,1));
       color: #00110f;
+      white-space: nowrap;
     }
 
     footer{
-      margin-top: 18px;
+      margin-top: 16px;
       text-align:center;
       color: rgba(255,255,255,.55);
       font-size: 11px;
       letter-spacing: 1px;
-      text-transform:uppercase;
+      text-transform:none;
     }
 
-    @media (max-width: 980px){
-      .heroInner{ grid-template-columns: 1fr; }
-      .grid{ grid-template-columns: 1fr; }
-      .brand{ min-width: unset; }
+    /* TABLET+ */
+    @media (min-width: 720px){
+      .topbar{ flex-direction: row; align-items:center; justify-content: space-between; }
+      .actions{ justify-content: flex-end; }
+      .btn{ flex: 0 0 auto; }
+      .grid{ grid-template-columns: repeat(2, 1fr); }
+      .heroInner{ grid-template-columns: 1.2fr .8fr; padding: 22px; }
+    }
+    /* DESKTOP */
+    @media (min-width: 1024px){
+      .grid{ grid-template-columns: repeat(3, 1fr); }
+      .heroInner{ padding: 26px; }
+    }
+
+    /* ACESSIBILIDADE */
+    @media (prefers-reduced-motion: reduce){
+      .btn, .unit{ transition:none; }
+      .btn:hover, .unit:hover{ transform:none; }
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="topbar">
+
+    <header class="topbar">
       <div class="brand">
-        <img id="topLogo" src="/assets/logo-farmalima.png" alt="LOGO" />
-        <div class="title">
+        <div class="brandLogo" aria-hidden="true">
+          <img id="topLogo" src="/assets/logo-farmalima.png" alt="LOGO" loading="eager" decoding="async" />
+        </div>
+        <div class="brandText">
           <strong id="brandName">FARMA LIMA</strong>
           <span id="brandSub">ENDEREÇOS • CONTATOS • WHATSAPP</span>
         </div>
       </div>
 
       <div class="actions">
+        <span class="pill" id="pill">DISK MEDICAÇÃO</span>
         <a class="btn primary" id="ctaWhatsapp" href="#" target="_blank" rel="noopener">FALAR NO WHATSAPP</a>
         <a class="btn" href="#unidades">VER UNIDADES</a>
       </div>
-    </div>
+    </header>
 
     <section class="hero">
       <div class="wave" aria-hidden="true">
         <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
           <path d="M0,180 C140,230 260,90 420,140 C580,190 620,280 800,210 C980,140 1020,40 1200,110 L1200,0 L0,0 Z"
-                fill="color-mix(in srgb, var(--PRIMARY) 22%, transparent)"></path>
+                fill="rgba(0,229,216,.22)"></path>
           <path d="M0,220 C160,280 260,120 420,180 C580,240 640,300 820,230 C1000,160 1040,90 1200,140 L1200,0 L0,0 Z"
-                fill="color-mix(in srgb, var(--SECONDARY) 14%, transparent)"></path>
+                fill="rgba(255,59,59,.14)"></path>
         </svg>
       </div>
 
       <div class="heroInner">
         <div>
-          <h1 id="heroTitle">BEM-VINDO À FARMA LIMA</h1>
-          <p id="heroDesc">ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA.</p>
+          <h1 id="heroTitle">BEM VINDO À FARMA LIMA</h1>
+          <p id="heroDesc">ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA. CLIQUE NO WHATSAPP PARA FALAR AGORA OU VEJA AS UNIDADES ABAIXO.</p>
         </div>
 
         <div class="heroCard">
           <div class="mini">
-            <strong id="heroCardTitle">ATENDIMENTO</strong>
-            <span id="heroCardSub">CLIQUE PARA FALAR NO WHATSAPP</span>
+            <strong id="heroCardTitle">ENTREGA RÁPIDA</strong>
+            <span id="heroCardSub">CHAME NO WHATSAPP E RECEBA COM AGILIDADE</span>
           </div>
-          <img id="heroLogo" src="/assets/logo-farmalima.png" alt="LOGO" />
+          <img id="heroLogo" src="/assets/logo-farmalima.png" alt="LOGO" loading="lazy" decoding="async" />
         </div>
       </div>
     </section>
@@ -409,164 +490,152 @@
       <small>CLIQUE PARA ABRIR WHATSAPP OU MAPS</small>
     </div>
 
-    <div class="grid" id="unitsGrid"></div>
+    <main class="grid" id="unitsGrid" aria-live="polite"></main>
 
     <footer id="footer">© 2026 FARMA LIMA</footer>
   </div>
 
-  <div class="float" id="floatWrap" style="display:none;">
+  <div class="float" id="floatWrap">
     <a id="floatWhatsapp" href="#" target="_blank" rel="noopener">WHATSAPP • ATENDIMENTO</a>
   </div>
 
   <script>
-    const DEFAULT = {
-      theme:{ bg:"#050608", text:"#EAF2F2", red:"#EC1F26", teal:"#34CCD1" },
-      brand:{ name:"FARMA LIMA", tagline:"ENDEREÇOS • CONTATOS • WHATSAPP", logoUrl:"/assets/logo-farmalima.png" },
-      hero:{ title:"BEM-VINDO À FARMA LIMA", text:"ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA." },
-      mainWhatsapp:{ number:"5592999999999", message:"OLÁ! QUERO INFORMAÇÕES DA FARMA LIMA.", label:"FALAR NO WHATSAPP" },
-      units:[]
+    const DEFAULT_DATA = {
+      brandName: "FARMA LIMA",
+      brandSub: "ENDEREÇOS • CONTATOS • WHATSAPP",
+      pillText: "DISK MEDICAÇÃO",
+      heroTitle: "BEM VINDO À FARMA LIMA",
+      heroDesc: "ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA. CLIQUE NO WHATSAPP PARA FALAR AGORA OU VEJA AS UNIDADES ABAIXO.",
+      heroCardTitle: "ENTREGA RÁPIDA",
+      heroCardSub: "CHAME NO WHATSAPP E RECEBA COM AGILIDADE",
+      globalWhatsapp: "5592999999999",
+      footerText: "© 2026 FARMA LIMA",
+      logoUrl: "/assets/logo-farmalima.png",
+      units: [
+        {
+          name: "CENTRO",
+          note: "ATENDIMENTO RÁPIDO",
+          address: "AV LEONARDO MALCHER, N 783",
+          whatsapp: "5592999999999",
+          maps: ""
+        }
+      ]
     };
+
+    const $ = (id) => document.getElementById(id);
 
     function waLink(phone, text){
       const p = (phone || "").replace(/\D/g, "");
-      const t = encodeURIComponent((text || "OLÁ! QUERO ATENDIMENTO.").toUpperCase());
-      return `https://wa.me/${p}?text=${t}`;
+      const t = encodeURIComponent(text || "OLÁ! QUERO ATENDIMENTO.");
+      return p ? `https://wa.me/${p}?text=${t}` : "#";
     }
+
     function mapsLink(address){
-      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((address||"").toUpperCase())}`;
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address || "")}`;
     }
 
-    function setCSSVar(name, value){
-      if(!value) return;
-      document.documentElement.style.setProperty(name, value);
+    function setText(id, value){
+      const el = $(id);
+      if(el) el.textContent = value || "";
     }
 
-    function applyTheme(theme){
-      // Mapeia do admin -> CSS do site
-      setCSSVar("--BG", theme.bg);
-      setCSSVar("--TEXT", theme.text);
-      setCSSVar("--PRIMARY", theme.teal);
-      setCSSVar("--SECONDARY", theme.red);
+    function setLogos(url){
+      const safe = url && url.trim() ? url.trim() : DEFAULT_DATA.logoUrl;
+      const top = $("topLogo");
+      const hero = $("heroLogo");
 
-      // Ajusta cores derivadas (cards/muted) se quiser manter o mesmo padrão
-      // CARD e MUTED ficam fixos do layout atual (padrão moderno)
+      if(top) top.src = safe;
+      if(hero) hero.src = safe;
+
+      // fallback se quebrar
+      const fallback = () => {
+        if(top) top.src = DEFAULT_DATA.logoUrl;
+        if(hero) hero.src = DEFAULT_DATA.logoUrl;
+      };
+      if(top) top.onerror = fallback;
+      if(hero) hero.onerror = fallback;
     }
 
     function render(data){
-      const d = {
-        ...DEFAULT,
-        ...data,
-        theme: { ...DEFAULT.theme, ...(data.theme||{}) },
-        brand: { ...DEFAULT.brand, ...(data.brand||{}) },
-        hero: { ...DEFAULT.hero, ...(data.hero||{}) },
-        mainWhatsapp: { ...DEFAULT.mainWhatsapp, ...(data.mainWhatsapp||{}) },
-        units: Array.isArray(data.units) ? data.units : (DEFAULT.units||[])
-      };
+      const d = Object.assign({}, DEFAULT_DATA, data || {});
 
-      applyTheme(d.theme);
+      setText("brandName", d.brandName);
+      setText("brandSub", d.brandSub);
+      setText("pill", d.pillText);
+      setText("heroTitle", d.heroTitle);
+      setText("heroDesc", d.heroDesc);
+      setText("heroCardTitle", d.heroCardTitle);
+      setText("heroCardSub", d.heroCardSub);
+      setText("footer", d.footerText);
+      setLogos(d.logoUrl || DEFAULT_DATA.logoUrl);
 
-      // Brand
-      document.getElementById("brandName").textContent = (d.brand.name || "").toUpperCase();
-      document.getElementById("brandSub").textContent = (d.brand.tagline || "").toUpperCase();
+      const mainWa = waLink(d.globalWhatsapp, "OLÁ! QUERO ATENDIMENTO NA FARMA LIMA.");
+      $("ctaWhatsapp").href = mainWa;
 
-      const logo = d.brand.logoUrl || "/assets/logo-farmalima.png";
-      document.getElementById("topLogo").src = logo;
-      document.getElementById("heroLogo").src = logo;
-
-      // Hero
-      document.getElementById("heroTitle").textContent = (d.hero.title || "").toUpperCase();
-      document.getElementById("heroDesc").textContent = (d.hero.text || "").toUpperCase();
-
-      // WhatsApp principal
-      const mainWa = waLink(d.mainWhatsapp.number, d.mainWhatsapp.message);
-      const cta = document.getElementById("ctaWhatsapp");
-      cta.href = mainWa;
-      cta.textContent = (d.mainWhatsapp.label || "FALAR NO WHATSAPP").toUpperCase();
-
-      const floatWrap = document.getElementById("floatWrap");
-      const floatA = document.getElementById("floatWhatsapp");
+      const floatWrap = $("floatWrap");
+      const floatA = $("floatWhatsapp");
       floatA.href = mainWa;
-      floatA.textContent = (d.mainWhatsapp.label ? `WHATSAPP • ${d.mainWhatsapp.label}` : "WHATSAPP • ATENDIMENTO").toUpperCase();
-      floatWrap.style.display = d.mainWhatsapp.number ? "flex" : "none";
+      floatWrap.style.display = d.globalWhatsapp ? "flex" : "none";
 
-      // Unidades
-      const grid = document.getElementById("unitsGrid");
+      const grid = $("unitsGrid");
       grid.innerHTML = "";
 
-      const units = (d.units && d.units.length) ? d.units : [{
-        name:"CENTRO",
-        type:"FARMÁCIA",
-        badge:"red",
-        description:"ATENDIMENTO RÁPIDO",
-        address:"AV LEONARDO MALCHER, N 783",
-        maps:"",
-        whatsapp:d.mainWhatsapp.number,
-        wmsg:"OLÁ! QUERO INFORMAÇÕES."
-      }];
+      (d.units || []).forEach((u) => {
+        const name = (u.name || "UNIDADE").toUpperCase();
+        const note = (u.note || "").trim();
+        const address = (u.address || "").toUpperCase();
 
-      units.forEach((u) => {
-        const card = document.createElement("div");
+        const card = document.createElement("article");
         card.className = "unit";
 
-        const header = document.createElement("div");
-        header.className = "unitHead";
+        card.innerHTML = `
+          <div class="unitHead">
+            <strong title="${name}">${name}</strong>
+            <span class="tag">UNIDADE</span>
+          </div>
+          ${note ? `<p>${note}</p>` : ""}
+          <div class="box">
+            <small>ENDEREÇO</small>
+            <strong>${address || "NÃO INFORMADO"}</strong>
+          </div>
+          <div class="box">
+            <small>WHATSAPP</small>
+            <strong>CLIQUE PARA CONVERSAR</strong>
+          </div>
+          <div class="rowBtns"></div>
+        `;
 
-        const title = document.createElement("strong");
-        title.textContent = (u.name || "UNIDADE").toUpperCase();
-
-        const tag = document.createElement("span");
-        tag.className = "tag";
-        tag.textContent = ((u.type || "UNIDADE")).toUpperCase();
-
-        header.appendChild(title);
-        header.appendChild(tag);
-
-        const p = document.createElement("p");
-        p.textContent = (u.description || "").toUpperCase();
-
-        const boxAddr = document.createElement("div");
-        boxAddr.className = "box";
-        boxAddr.innerHTML = `<small>ENDEREÇO</small><strong>${(u.address || "").toUpperCase()}</strong>`;
-
-        const btns = document.createElement("div");
-        btns.className = "rowBtns";
+        const btns = card.querySelector(".rowBtns");
 
         const btnWa = document.createElement("a");
         btnWa.className = "btn primary";
         btnWa.textContent = "WHATSAPP";
-        btnWa.href = waLink(u.whatsapp || d.mainWhatsapp.number, u.wmsg || d.mainWhatsapp.message);
+        btnWa.href = waLink(u.whatsapp || d.globalWhatsapp, `OLÁ! QUERO ATENDIMENTO NA UNIDADE ${name}.`);
         btnWa.target = "_blank";
         btnWa.rel = "noopener";
 
         const btnMap = document.createElement("a");
         btnMap.className = "btn";
         btnMap.textContent = "MAPS";
-        btnMap.href = (u.maps && u.maps.trim()) ? u.maps.trim() : mapsLink(u.address || "");
+        btnMap.href = u.maps ? u.maps : mapsLink(u.address || "");
         btnMap.target = "_blank";
         btnMap.rel = "noopener";
 
         btns.appendChild(btnWa);
         btns.appendChild(btnMap);
 
-        card.appendChild(header);
-        if (u.description) card.appendChild(p);
-        card.appendChild(boxAddr);
-        card.appendChild(btns);
-
         grid.appendChild(card);
       });
-
-      // Footer
-      document.getElementById("footer").textContent = `© ${new Date().getFullYear()} ${(d.brand.name || "FARMA LIMA").toUpperCase()}`;
     }
 
     async function load(){
       try{
         const r = await fetch("/api/content", { cache: "no-store" });
-        const data = r.ok ? await r.json() : {};
-        render(Object.keys(data||{}).length ? data : DEFAULT);
+        if(!r.ok) throw new Error("API FAIL");
+        const data = await r.json();
+        render(Object.keys(data || {}).length ? data : DEFAULT_DATA);
       }catch(e){
-        render(DEFAULT);
+        render(DEFAULT_DATA);
       }
     }
 
@@ -574,4 +643,3 @@
   </script>
 </body>
 </html>
-
