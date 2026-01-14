@@ -1,54 +1,58 @@
-// /functions/api/content.js
-const CONTENT_KEY = "site:content";
-
-export async function onRequestGet({ env }) {
-  if (!env.SITE_KV) return json({ error: "SITE_KV não configurado." }, 500);
-
-  const raw = await env.SITE_KV.get(CONTENT_KEY);
-  if (!raw) return json({}, 200);
-
-  try {
-    return json(JSON.parse(raw), 200);
-  } catch {
-    return json({}, 200);
-  }
-}
-
+// /functions/api/login.js
 export async function onRequestPost({ request, env }) {
-  // Protege o SAVE
-  const auth = await requireAuth(request, env);
-  if (!auth.ok) return json({ error: "Não autorizado." }, 401);
+  try {
+    // 1) garante que a secret existe
+    if (!env.ADMIN_PASSWORD) {
+      return json({ error: "ADMIN_PASSWORD não configurado no Cloudflare." }, 500);
+    }
+    if (!env.SITE_KV) {
+      return json({ error: "Binding SITE_KV não configurado (KV obrigatório)." }, 500);
+    }
 
-  const body = await request.json().catch(() => null);
-  if (!body) return json({ error: "JSON inválido." }, 400);
+    // 2) lê senha enviada
+    const body = await request.json().catch(() => ({}));
+    const password = (body.password || "").toString();
 
-  await env.SITE_KV.put(CONTENT_KEY, JSON.stringify(body));
-  return json({ ok: true }, 200);
-}
+    if (!password) {
+      return json({ error: "Informe a senha." }, 400);
+    }
 
-async function requireAuth(request, env) {
-  if (!env.SITE_KV) return { ok: false };
+    // 3) valida
+    if (password !== env.ADMIN_PASSWORD) {
+      return json({ error: "Senha incorreta." }, 401);
+    }
 
-  const token = getCookie(request.headers.get("Cookie") || "", "FL_ADMIN_SESSION");
-  if (!token) return { ok: false };
+    // 4) cria token de sessão + salva no KV
+    const token = crypto.randomUUID();
+    const key = `admin_session:${token}`;
+    // 7 dias
+    await env.SITE_KV.put(key, "1", { expirationTtl: 60 * 60 * 24 * 7 });
 
-  const key = `admin_session:${token}`;
-  const exists = await env.SITE_KV.get(key);
-  return { ok: !!exists };
+    // 5) seta cookie HttpOnly (seguro)
+    const headers = new Headers();
+    headers.set("Set-Cookie", cookie("FL_ADMIN_SESSION", token, 60 * 60 * 24 * 7));
+    headers.set("Cache-Control", "no-store");
+
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers,
+    });
+  } catch (e) {
+    return json({ error: "Erro interno no login.", detail: String(e?.message || e) }, 500);
+  }
 }
 
 function json(obj, status = 200) {
   return new Response(JSON.stringify(obj), {
     status,
-    headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" },
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store",
+    },
   });
 }
 
-function getCookie(cookieHeader, name) {
-  const parts = cookieHeader.split(";").map(s => s.trim());
-  for (const p of parts) {
-    const [k, ...rest] = p.split("=");
-    if (k === name) return decodeURIComponent(rest.join("="));
-  }
-  return "";
+function cookie(name, value, maxAgeSeconds) {
+  // Secure + HttpOnly + SameSite=Strict (ótimo)
+  return `${name}=${encodeURIComponent(value)}; Path=/; Max-Age=${maxAgeSeconds}; HttpOnly; Secure; SameSite=Strict`;
 }
