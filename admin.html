@@ -14,21 +14,17 @@
       width:100%; margin-top:6px; padding:10px 12px; border-radius:12px;
       border:1px solid rgba(255,255,255,.14); background:rgba(0,0,0,.25); color:#EAF2F2;
       outline:none;
-      text-transform:uppercase;
-      letter-spacing:.6px;
-      font-weight:800;
     }
     textarea{min-height:80px;resize:vertical}
     .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     @media(max-width:800px){.row{grid-template-columns:1fr}}
     .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-    button,a.btn{
+    button{
       border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06);
-      color:#EAF2F2; padding:10px 14px; border-radius:999px; font-weight:1000; cursor:pointer;
-      text-decoration:none; display:inline-flex; align-items:center; justify-content:center;
+      color:#EAF2F2; padding:10px 14px; border-radius:999px; font-weight:800; cursor:pointer;
     }
     button.primary{border-color: rgba(52,204,209,.45); background: rgba(52,204,209,.12)}
-    .hint{font-size:12px;color:rgba(234,242,242,.65);margin-top:8px;line-height:1.4;text-transform:none}
+    .hint{font-size:12px;color:rgba(234,242,242,.65);margin-top:8px;line-height:1.4}
     .unit{border:1px dashed rgba(255,255,255,.18);border-radius:14px;padding:12px;margin-top:10px}
     .danger{border-color: rgba(236,31,38,.45); background: rgba(236,31,38,.10)}
   </style>
@@ -37,16 +33,6 @@
   <div class="wrap">
     <h1>Admin • Farma Lima</h1>
     <div class="hint">Edite e clique em <b>Salvar</b>. O site vai carregar essas configurações automaticamente.</div>
-
-    <div class="card">
-      <div class="btns">
-        <button class="danger" id="logout">Sair</button>
-        <button id="reload">Recarregar</button>
-        <button class="primary" id="save">Salvar alterações</button>
-        <a class="btn" href="/" target="_blank" rel="noopener">Ver site</a>
-      </div>
-      <div class="hint" id="status"></div>
-    </div>
 
     <div class="card">
       <h2 style="margin:0;font-size:15px">Marca</h2>
@@ -61,12 +47,20 @@
     <div class="card">
       <h2 style="margin:0;font-size:15px">Tema (cores)</h2>
       <div class="row">
-        <div><label>Fundo</label><input id="cBg" placeholder="#050608"></div>
-        <div><label>Texto</label><input id="cText" placeholder="#EAF2F2"></div>
+        <div>
+          <label>Fundo</label><input id="cBg" placeholder="#050608">
+        </div>
+        <div>
+          <label>Texto</label><input id="cText" placeholder="#EAF2F2">
+        </div>
       </div>
       <div class="row">
-        <div><label>Vermelho (cruz)</label><input id="cRed" placeholder="#EC1F26"></div>
-        <div><label>Ciano (seta)</label><input id="cTeal" placeholder="#34CCD1"></div>
+        <div>
+          <label>Vermelho (cruz)</label><input id="cRed" placeholder="#EC1F26">
+        </div>
+        <div>
+          <label>Ciano (seta)</label><input id="cTeal" placeholder="#34CCD1">
+        </div>
       </div>
     </div>
 
@@ -97,44 +91,70 @@
         <button id="addUnit">+ Adicionar unidade</button>
       </div>
     </div>
+
+    <div class="card">
+      <div class="btns">
+        <button class="primary" id="save">Salvar alterações</button>
+        <button id="reload">Recarregar</button>
+        <a href="/" style="padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);font-weight:800;">Ver site</a>
+      </div>
+      <div class="hint" id="status"></div>
+    </div>
   </div>
 
   <script>
     const DEFAULT = {
       theme:{ bg:"#050608", text:"#EAF2F2", red:"#EC1F26", teal:"#34CCD1" },
-      brand:{ name:"FARMA LIMA", tagline:"ENDEREÇOS • CONTATOS • WHATSAPP", logoUrl:"/assets/logo-farmalima.png" },
-      hero:{ title:"BEM-VINDO À FARMA LIMA", text:"ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA." },
-      mainWhatsapp:{ number:"5592999999999", message:"OLÁ! QUERO INFORMAÇÕES DA FARMA LIMA.", label:"FALAR NO WHATSAPP" },
+      brand:{ name:"Farma Lima", tagline:"Endereços • Contatos • WhatsApp", logoUrl:"/assets/logo-farmalima.png" },
+      hero:{ title:"Bem-vindo à Farma Lima", text:"Atendimento rápido, presença local e confiança." },
+      mainWhatsapp:{ number:"5592999999999", message:"Olá! Quero informações da Farma Lima.", label:"Falar no WhatsApp" },
       units:[]
     };
 
     const el = (id)=>document.getElementById(id);
     const status = el("status");
     const unitsWrap = el("units");
-    const getToken = ()=> localStorage.getItem("ADMIN_TOKEN") || "";
 
     function unitTemplate(u, idx){
       return `
         <div class="unit" data-idx="${idx}">
           <div class="row">
-            <div><label>Nome</label><input data-k="name" value="${u.name||""}"></div>
-            <div><label>Tipo (Farmácia, Unidade, etc.)</label><input data-k="type" value="${u.type||""}"></div>
+            <div>
+              <label>Nome</label>
+              <input data-k="name" value="${u.name||""}">
+            </div>
+            <div>
+              <label>Tipo (Farmácia, Unidade, etc.)</label>
+              <input data-k="type" value="${u.type||""}">
+            </div>
           </div>
 
           <div class="row">
-            <div><label>Badge (red ou vazio)</label><input data-k="badge" value="${u.badge||""}"></div>
-            <div><label>Descrição</label><input data-k="description" value="${u.description||""}"></div>
+            <div>
+              <label>Badge (digite "red" para vermelho, ou deixe vazio)</label>
+              <input data-k="badge" value="${u.badge||""}">
+            </div>
+            <div>
+              <label>Descrição</label>
+              <input data-k="description" value="${u.description||""}">
+            </div>
           </div>
 
           <label>Endereço (texto)</label>
           <input data-k="address" value="${u.address||""}">
 
-          <label>Link do Maps (opcional)</label>
+          <label>Link do Maps (https://www.google.com/maps?q=...)</label>
           <input data-k="maps" value="${u.maps||""}">
 
           <div class="row">
-            <div><label>WhatsApp (55+DDD+Número)</label><input data-k="whatsapp" value="${u.whatsapp||""}"></div>
-            <div><label>Mensagem WhatsApp</label><input data-k="wmsg" value="${u.wmsg||""}"></div>
+            <div>
+              <label>WhatsApp (55+DDD+Número)</label>
+              <input data-k="whatsapp" value="${u.whatsapp||""}">
+            </div>
+            <div>
+              <label>Mensagem WhatsApp</label>
+              <input data-k="wmsg" value="${u.wmsg||""}">
+            </div>
           </div>
 
           <div class="btns">
@@ -145,7 +165,7 @@
     }
 
     function renderUnits(units){
-      unitsWrap.innerHTML = (units||[]).map((u,i)=>unitTemplate(u,i)).join("");
+      unitsWrap.innerHTML = units.map((u,i)=>unitTemplate(u,i)).join("");
     }
 
     function readUnitsFromDOM(){
@@ -153,74 +173,54 @@
       return boxes.map(box=>{
         const obj = {};
         [...box.querySelectorAll("input[data-k]")].forEach(inp=>{
-          obj[inp.dataset.k] = (inp.value || "").trim().toUpperCase();
+          obj[inp.dataset.k] = inp.value.trim();
         });
         return obj;
       });
     }
 
     window.removeUnit = (idx)=>{
-      window.__data.units.splice(idx, 1);
-      renderUnits(window.__data.units);
+      const data = window.__data;
+      data.units.splice(idx, 1);
+      renderUnits(data.units);
     };
-
-    async function checkAuth(){
-      const token = getToken();
-      if(!token) throw new Error("NO_TOKEN");
-
-      const r = await fetch("/api/me", {
-        headers: { "x-admin-token": token },
-        cache: "no-store"
-      });
-
-      if(!r.ok) throw new Error("NOT_AUTH");
-      const j = await r.json().catch(()=>({}));
-      if(!j.ok) throw new Error("NOT_AUTH");
-    }
 
     async function load(){
       status.textContent = "Carregando…";
-      await checkAuth();
-
       let data = DEFAULT;
       try{
         const r = await fetch("/api/content", { cache:"no-store" });
-        if(r.ok){
-          const j = await r.json();
-          data = { ...DEFAULT, ...(j||{}) };
-        }
+        if(r.ok) data = { ...DEFAULT, ...(await r.json()) };
       }catch(e){}
-
       window.__data = data;
 
-      el("brandName").value = (data.brand?.name || "").toUpperCase();
-      el("brandTagline").value = (data.brand?.tagline || "").toUpperCase();
-      el("brandLogoUrl").value = (data.brand?.logoUrl || "").toUpperCase();
+      el("brandName").value = data.brand.name || "";
+      el("brandTagline").value = data.brand.tagline || "";
+      el("brandLogoUrl").value = data.brand.logoUrl || "";
 
-      el("cBg").value = (data.theme?.bg || "").toUpperCase();
-      el("cText").value = (data.theme?.text || "").toUpperCase();
-      el("cRed").value = (data.theme?.red || "").toUpperCase();
-      el("cTeal").value = (data.theme?.teal || "").toUpperCase();
+      el("cBg").value = data.theme.bg || "";
+      el("cText").value = data.theme.text || "";
+      el("cRed").value = data.theme.red || "";
+      el("cTeal").value = data.theme.teal || "";
 
-      el("mainWaNumber").value = (data.mainWhatsapp?.number || "").toUpperCase();
-      el("mainWaMsg").value = (data.mainWhatsapp?.message || "").toUpperCase();
-      el("mainWaLabel").value = (data.mainWhatsapp?.label || "").toUpperCase();
+      el("mainWaNumber").value = data.mainWhatsapp.number || "";
+      el("mainWaMsg").value = data.mainWhatsapp.message || "";
+      el("mainWaLabel").value = data.mainWhatsapp.label || "";
 
-      el("heroTitle").value = (data.hero?.title || "").toUpperCase();
-      el("heroText").value = (data.hero?.text || "").toUpperCase();
+      el("heroTitle").value = data.hero.title || "";
+      el("heroText").value = data.hero.text || "";
 
       renderUnits(data.units || []);
-      status.textContent = "Pronto ✅";
+      status.textContent = "Pronto.";
     }
 
     async function save(){
       status.textContent = "Salvando…";
-      await checkAuth();
-
       const data = window.__data;
+
       data.brand = {
-        name: el("brandName").value.trim().toUpperCase(),
-        tagline: el("brandTagline").value.trim().toUpperCase(),
+        name: el("brandName").value.trim(),
+        tagline: el("brandTagline").value.trim(),
         logoUrl: el("brandLogoUrl").value.trim(),
       };
       data.theme = {
@@ -235,57 +235,38 @@
         label: el("mainWaLabel").value.trim(),
       };
       data.hero = {
-        title: el("heroTitle").value.trim().toUpperCase(),
-        text: el("heroText").value.trim().toUpperCase(),
+        title: el("heroTitle").value.trim(),
+        text: el("heroText").value.trim(),
       };
       data.units = readUnitsFromDOM();
 
-      const token = getToken();
       const r = await fetch("/api/content", {
         method:"PUT",
-        headers: {
-          "Content-Type":"application/json",
-          "x-admin-token": token
-        },
+        headers: { "Content-Type":"application/json" },
         body: JSON.stringify(data)
       });
 
-      status.textContent = r.ok
-        ? "✅ Salvo! Recarregue o site para ver."
-        : "❌ Erro ao salvar (token inválido/expirado).";
-    }
-
-    async function logout(){
-      const token = getToken();
-      try{
-        await fetch("/api/logout", { method:"POST", headers: { "x-admin-token": token } });
-      }catch(e){}
-      localStorage.removeItem("ADMIN_TOKEN");
-      window.location.href = "/admin-login.html";
+      status.textContent = r.ok ? "✅ Salvo! Atualize o site para ver." : "❌ Erro ao salvar. Verifique permissão do admin.";
     }
 
     el("addUnit").addEventListener("click", ()=>{
       window.__data.units.push({
-        name:"NOVA UNIDADE",
-        type:"FARMÁCIA",
-        badge:"RED",
+        name:"Nova unidade",
+        type:"Farmácia",
+        badge:"red",
         description:"",
         address:"",
         maps:"",
         whatsapp:"",
-        wmsg:"OLÁ! QUERO INFORMAÇÕES."
+        wmsg:"Olá! Quero informações."
       });
       renderUnits(window.__data.units);
     });
 
     el("save").addEventListener("click", save);
     el("reload").addEventListener("click", load);
-    el("logout").addEventListener("click", logout);
 
-    (async ()=>{
-      try { await load(); }
-      catch(e){ window.location.href = "/admin-login.html"; }
-    })();
+    load();
   </script>
 </body>
 </html>
