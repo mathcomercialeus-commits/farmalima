@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ADMIN • FARMA LIMA</title>
+
   <style>
     :root{
       --PRIMARY:#00E5D8;
@@ -27,17 +28,31 @@
       text-transform: uppercase;
       letter-spacing:.6px;
     }
+
+    /* GARANTE QUE NADA INVISÍVEL BLOQUEIE CLIQUES */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .top, .card, .unitItem, .btn, input, textarea, .wrap{
+      position: relative;
+      z-index: 2;
+    }
+
     .wrap{ max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
     .top{
       display:flex; align-items:center; justify-content:space-between; gap:14px;
       padding: 14px 16px;
       border:1px solid var(--BORDER);
       background: rgba(18,24,33,.65);
-      backdrop-filter: blur(10px);
       border-radius: var(--RADIUS);
       box-shadow: var(--SHADOW);
     }
     .top strong{ font-weight: 1000; letter-spacing:1.6px; }
+
     .btn{
       border:1px solid var(--BORDER);
       background: rgba(255,255,255,.04);
@@ -56,6 +71,7 @@
     .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.16); }
     .btn.primary{ background: linear-gradient(180deg, rgba(0,229,216,1), rgba(0,180,170,1)); color:#00110f; border:none; }
     .btn.danger{ background: linear-gradient(180deg, rgba(255,59,59,1), rgba(200,30,30,1)); border:none; }
+
     .grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -99,15 +115,19 @@
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="top">
       <strong>ADMIN • FARMA LIMA</strong>
+
       <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
         <a class="btn" href="/" target="_blank" rel="noopener">VER SITE</a>
-        <button class="btn primary" id="btnSave">SALVAR ALTERAÇÕES</button>
-        <button class="btn" id="btnReload">RECARREGAR</button>
-        <button class="btn danger" id="btnLogout">SAIR</button>
+
+        <!-- IMPORTANTE: type="button" -->
+        <button type="button" class="btn primary" id="btnSave">SALVAR ALTERAÇÕES</button>
+        <button type="button" class="btn" id="btnReload">RECARREGAR</button>
+        <button type="button" class="btn danger" id="btnLogout">SAIR</button>
       </div>
     </div>
 
@@ -127,6 +147,9 @@
 
         <label>TEXTO DO PILL</label>
         <input id="pillText" placeholder="DISK MEDICAÇÃO" />
+
+        <label>URL DA LOGO (EX: /assets/logo-farmalima.png)</label>
+        <input id="logoUrl" placeholder="/assets/logo-farmalima.png" />
 
         <label>WHATSAPP GLOBAL (EX: 5592999999999)</label>
         <input id="globalWhatsapp" placeholder="5592..." />
@@ -153,12 +176,15 @@
     <div class="card" style="margin-top:14px;">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
         <strong>UNIDADES</strong>
-        <button class="btn primary" id="btnAddUnit">+ ADICIONAR UNIDADE</button>
+        <!-- IMPORTANTE: type="button" -->
+        <button type="button" class="btn primary" id="btnAddUnit">+ ADICIONAR UNIDADE</button>
       </div>
-      <div class="muted" style="margin-top:6px;">CADA UNIDADE TEM WHATSAPP E ENDEREÇO. MAPS É OPCIONAL (SE VAZIO, GERA AUTOMÁTICO).</div>
+
+      <div class="muted" style="margin-top:6px;">
+        CADA UNIDADE TEM WHATSAPP E ENDEREÇO. MAPS É OPCIONAL (SE VAZIO, GERA AUTOMÁTICO).
+      </div>
 
       <div class="units" id="units"></div>
-
       <div class="status" id="status"></div>
     </div>
   </div>
@@ -170,6 +196,7 @@
       brandName: "FARMA LIMA",
       brandSub: "ENDEREÇOS • CONTATOS • WHATSAPP",
       pillText: "DISK MEDICAÇÃO",
+      logoUrl: "/assets/logo-farmalima.png",
       heroTitle: "BEM VINDO À FARMA LIMA",
       heroDesc: "ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA. CLIQUE NO WHATSAPP PARA FALAR AGORA OU VEJA AS UNIDADES ABAIXO.",
       heroCardTitle: "ENTREGA RÁPIDA",
@@ -188,40 +215,44 @@
       const wrap = document.createElement("div");
       wrap.className = "unitItem";
 
+      const safe = (v) => String(v ?? "").replace(/"/g, "&quot;"); // evita quebrar o HTML
+
       wrap.innerHTML = `
         <div class="row">
           <div>
             <label>NOME DA UNIDADE</label>
-            <input class="u_name" placeholder="CENTRO" value="${(u.name||"").toUpperCase()}">
+            <input class="u_name" placeholder="CENTRO" value="${safe((u.name||"").toUpperCase())}">
           </div>
           <div>
             <label>OBS (OPCIONAL)</label>
-            <input class="u_note" placeholder="ATENDIMENTO RÁPIDO" value="${(u.note||"").toUpperCase()}">
+            <input class="u_note" placeholder="ATENDIMENTO RÁPIDO" value="${safe((u.note||"").toUpperCase())}">
           </div>
         </div>
 
         <label>ENDEREÇO</label>
-        <input class="u_address" placeholder="AV LEONARDO MALCHER, N 783" value="${(u.address||"").toUpperCase()}">
+        <input class="u_address" placeholder="AV LEONARDO MALCHER, N 783" value="${safe((u.address||"").toUpperCase())}">
 
         <div class="row">
           <div>
             <label>WHATSAPP (EX: 5592...)</label>
-            <input class="u_whatsapp" placeholder="5592..." value="${(u.whatsapp||"").toUpperCase()}">
+            <input class="u_whatsapp" placeholder="5592..." value="${safe((u.whatsapp||"").toUpperCase())}">
           </div>
           <div>
             <label>LINK MAPS (OPCIONAL)</label>
-            <input class="u_maps" placeholder="https://maps..." value="${(u.maps||"").toUpperCase()}">
+            <input class="u_maps" placeholder="https://maps..." value="${safe((u.maps||"").toUpperCase())}">
           </div>
         </div>
 
         <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:10px;">
-          <button class="btn danger u_remove">REMOVER</button>
+          <button type="button" class="btn danger u_remove">REMOVER</button>
         </div>
       `;
 
-      wrap.querySelector(".u_remove").onclick = () => {
+      wrap.querySelector(".u_remove").addEventListener("click", (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
         wrap.remove();
-      };
+      });
 
       return wrap;
     }
@@ -242,6 +273,7 @@
         brandName: $("brandName").value.trim(),
         brandSub: $("brandSub").value.trim(),
         pillText: $("pillText").value.trim(),
+        logoUrl: $("logoUrl").value.trim() || DEFAULT_DATA.logoUrl,
         heroTitle: $("heroTitle").value.trim(),
         heroDesc: $("heroDesc").value.trim(),
         heroCardTitle: $("heroCardTitle").value.trim(),
@@ -257,6 +289,7 @@
       $("brandName").value = (d.brandName||"").toUpperCase();
       $("brandSub").value = (d.brandSub||"").toUpperCase();
       $("pillText").value = (d.pillText||"").toUpperCase();
+      $("logoUrl").value = (d.logoUrl||DEFAULT_DATA.logoUrl);
       $("heroTitle").value = (d.heroTitle||"").toUpperCase();
       $("heroDesc").value = (d.heroDesc||"").toUpperCase();
       $("heroCardTitle").value = (d.heroCardTitle||"").toUpperCase();
@@ -323,18 +356,40 @@
       }
     }
 
-    $("btnAddUnit").onclick = () => $("units").appendChild(createUnitItem());
-    $("btnReload").onclick = load;
-    $("btnSave").onclick = save;
-    $("btnLogout").onclick = () => {
-      localStorage.removeItem("ADMIN_TOKEN");
-      $("token").value = "";
-      setStatus("SAIU. TOKEN REMOVIDO.", true);
-    };
+    // === EVENTOS (COM PROTEÇÃO) ===
+    function bind(){
+      $("btnAddUnit").addEventListener("click", (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        $("units").appendChild(createUnitItem());
+        setStatus("UNIDADE ADICIONADA ✅", true);
+      });
+
+      $("btnReload").addEventListener("click", (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        load();
+      });
+
+      $("btnSave").addEventListener("click", (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        save();
+      });
+
+      $("btnLogout").addEventListener("click", (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        localStorage.removeItem("ADMIN_TOKEN");
+        $("token").value = "";
+        setStatus("SAIU. TOKEN REMOVIDO.", true);
+      });
+    }
 
     // autofill token
     $("token").value = localStorage.getItem("ADMIN_TOKEN") || "";
 
+    bind();
     load();
   </script>
 </body>
