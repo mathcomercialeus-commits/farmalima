@@ -1,40 +1,59 @@
-// /functions/api/content.js
-const CONTENT_KEY = "site:content";
+export async function onRequest(context) {
+  const { request, env } = context;
 
-export async function onRequestGet({ env }) {
-  if (!env.SITE_KV) return json({ error: "SITE_KV não configurado." }, 500);
-
-  const raw = await env.SITE_KV.get(CONTENT_KEY);
-  if (!raw) return json({}, 200);
-
-  try {
-    return json(JSON.parse(raw), 200);
-  } catch {
-    return json({}, 200);
+  if (!env.SITE_KV) {
+    return new Response("KV SITE_KV não encontrado", { status: 500 });
   }
-}
 
-// salva com token (header x-admin-token)
-export async function onRequestPut({ request, env }) {
-  if (!env.SITE_KV) return json({ error: "SITE_KV não configurado." }, 500);
+  const KEY = "CONTENT";
 
-  const token = request.headers.get("x-admin-token") || "";
-  if (!token) return json({ error: "Não autorizado." }, 401);
+  const cors = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,PUT,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  };
 
-  const key = `admin_token:${token}`;
-  const exists = await env.SITE_KV.get(key);
-  if (!exists) return json({ error: "Token inválido/expirado." }, 401);
+  if (request.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: cors });
+  }
 
-  const body = await request.json().catch(() => null);
-  if (!body) return json({ error: "JSON inválido." }, 400);
+  // 🔹 LER
+  if (request.method === "GET") {
+    const value = await env.SITE_KV.get(KEY);
+    return new Response(value || "{}", {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        ...cors,
+      },
+    });
+  }
 
-  await env.SITE_KV.put(CONTENT_KEY, JSON.stringify(body));
-  return json({ ok: true }, 200);
-}
+  // 🔹 SALVAR (SEM TOKEN – ABERTO)
+  if (request.method === "PUT") {
+    let data;
+    try {
+      data = await request.json();
+    } catch {
+      return new Response("JSON inválido", { status: 400 });
+    }
 
-function json(obj, status = 200) {
-  return new Response(JSON.stringify(obj), {
-    status,
-    headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" },
+    await env.SITE_KV.put(KEY, JSON.stringify(data));
+
+    return new Response(
+      JSON.stringify({ ok: true }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+          ...cors,
+        },
+      }
+    );
+  }
+
+  return new Response("Método não permitido", {
+    status: 405,
+    headers: cors,
   });
 }
