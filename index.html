@@ -7,12 +7,12 @@
 
   <style>
     :root{
-      --PRIMARY:#00E5D8;
-      --SECONDARY:#FF3B3B;
-      --DARK:#0B0F14;
+      --BG:#0B0F14;
+      --TEXT:#FFFFFF;
+      --PRIMARY:#00E5D8;   /* TEAL */
+      --SECONDARY:#FF3B3B; /* RED */
       --CARD:#121821;
       --MUTED:#9CA3AF;
-      --WHITE:#FFFFFF;
       --RADIUS:18px;
       --BORDER: rgba(255,255,255,.08);
       --SHADOW: 0 20px 60px rgba(0,0,0,.45);
@@ -22,10 +22,11 @@
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1100px 700px at 15% 10%, rgba(0,229,216,.18), transparent 55%),
-                  radial-gradient(1100px 700px at 85% 30%, rgba(255,59,59,.14), transparent 55%),
-                  var(--DARK);
-      color: var(--WHITE);
+      background:
+        radial-gradient(1100px 700px at 15% 10%, color-mix(in srgb, var(--PRIMARY) 18%, transparent), transparent 55%),
+        radial-gradient(1100px 700px at 85% 30%, color-mix(in srgb, var(--SECONDARY) 14%, transparent), transparent 55%),
+        var(--BG);
+      color: var(--TEXT);
       text-transform: uppercase;
       letter-spacing: .6px;
     }
@@ -89,7 +90,7 @@
     .btn{
       border:1px solid var(--BORDER);
       background: rgba(255,255,255,.04);
-      color: var(--WHITE);
+      color: var(--TEXT);
       padding: 10px 14px;
       border-radius: 999px;
       font-weight: 900;
@@ -103,20 +104,16 @@
     }
     .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.16); }
     .btn.primary{
-      background: linear-gradient(180deg, rgba(0,229,216,1), rgba(0,180,170,1));
+      background: linear-gradient(180deg, color-mix(in srgb, var(--PRIMARY) 100%, #000 0%), color-mix(in srgb, var(--PRIMARY) 70%, #000 30%));
       color:#00110f;
       border: none;
-    }
-    .btn.danger{
-      background: linear-gradient(180deg, rgba(255,59,59,1), rgba(200,30,30,1));
-      border:none;
     }
     .pill{
       font-size: 11px;
       padding: 6px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(0,229,216,.35);
-      background: rgba(0,229,216,.10);
+      border: 1px solid color-mix(in srgb, var(--PRIMARY) 35%, transparent);
+      background: color-mix(in srgb, var(--PRIMARY) 10%, transparent);
       color: var(--PRIMARY);
       font-weight: 900;
       letter-spacing: 1.1px;
@@ -165,11 +162,11 @@
       line-height: 1.4;
       font-size: 13px;
       letter-spacing: 1px;
-      text-transform: none; /* leitura melhor */
+      text-transform: uppercase; /* VOCÊ PEDIU CAIXA ALTA */
     }
     .heroCard{
       border: 1px solid rgba(255,255,255,.10);
-      background: linear-gradient(135deg, rgba(0,229,216,.10), rgba(255,59,59,.08));
+      background: linear-gradient(135deg, color-mix(in srgb, var(--PRIMARY) 10%, transparent), color-mix(in srgb, var(--SECONDARY) 8%, transparent));
       border-radius: var(--RADIUS);
       padding: 16px;
       display:flex;
@@ -192,7 +189,7 @@
       color: var(--MUTED);
       font-size: 11px;
       letter-spacing: 1px;
-      text-transform:none;
+      text-transform:uppercase;
     }
     .heroCard img{
       width: 120px;
@@ -219,7 +216,7 @@
     .sectionHead small{
       color: var(--MUTED);
       letter-spacing: 1px;
-      text-transform:none;
+      text-transform:uppercase;
     }
 
     .grid{
@@ -244,12 +241,12 @@
       inset:-60px -60px auto auto;
       width: 220px;
       height: 220px;
-      background: radial-gradient(circle at 30% 30%, rgba(0,229,216,.18), transparent 60%);
+      background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--PRIMARY) 18%, transparent), transparent 60%);
       transform: rotate(18deg);
     }
     .unit:hover{
       transform: translateY(-3px);
-      border-color: rgba(0,229,216,.35);
+      border-color: color-mix(in srgb, var(--PRIMARY) 35%, transparent);
     }
 
     .unitHead{
@@ -269,8 +266,8 @@
       font-size: 10px;
       padding: 6px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(255,59,59,.35);
-      background: rgba(255,59,59,.10);
+      border: 1px solid color-mix(in srgb, var(--SECONDARY) 35%, transparent);
+      background: color-mix(in srgb, var(--SECONDARY) 10%, transparent);
       color: var(--SECONDARY);
       font-weight: 1000;
       letter-spacing: 1.2px;
@@ -282,7 +279,7 @@
       font-size: 11px;
       letter-spacing: 1px;
       line-height: 1.4;
-      text-transform:none;
+      text-transform:uppercase;
       position:relative;
       z-index:2;
     }
@@ -343,7 +340,7 @@
       letter-spacing: 1.2px;
       box-shadow: 0 18px 50px rgba(0,0,0,.45);
       border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(0,229,216,1), rgba(0,180,170,1));
+      background: linear-gradient(180deg, color-mix(in srgb, var(--PRIMARY) 100%, #000 0%), color-mix(in srgb, var(--PRIMARY) 70%, #000 30%));
       color: #00110f;
     }
 
@@ -353,10 +350,9 @@
       color: rgba(255,255,255,.55);
       font-size: 11px;
       letter-spacing: 1px;
-      text-transform:none;
+      text-transform:uppercase;
     }
 
-    /* Responsive */
     @media (max-width: 980px){
       .heroInner{ grid-template-columns: 1fr; }
       .grid{ grid-template-columns: 1fr; }
@@ -367,7 +363,6 @@
 
 <body>
   <div class="wrap">
-
     <div class="topbar">
       <div class="brand">
         <img id="topLogo" src="/assets/logo-farmalima.png" alt="LOGO" />
@@ -388,24 +383,22 @@
       <div class="wave" aria-hidden="true">
         <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
           <path d="M0,180 C140,230 260,90 420,140 C580,190 620,280 800,210 C980,140 1020,40 1200,110 L1200,0 L0,0 Z"
-                fill="rgba(0,229,216,.22)"></path>
+                fill="color-mix(in srgb, var(--PRIMARY) 22%, transparent)"></path>
           <path d="M0,220 C160,280 260,120 420,180 C580,240 640,300 820,230 C1000,160 1040,90 1200,140 L1200,0 L0,0 Z"
-                fill="rgba(255,59,59,.14)"></path>
+                fill="color-mix(in srgb, var(--SECONDARY) 14%, transparent)"></path>
         </svg>
       </div>
 
       <div class="heroInner">
         <div>
-          <h1 id="heroTitle">BEM VINDO À FARMA LIMA</h1>
-          <p id="heroDesc">
-            ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA. CLIQUE NO WHATSAPP PARA FALAR AGORA OU VEJA AS UNIDADES ABAIXO.
-          </p>
+          <h1 id="heroTitle">BEM-VINDO À FARMA LIMA</h1>
+          <p id="heroDesc">ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA.</p>
         </div>
 
         <div class="heroCard">
           <div class="mini">
-            <strong id="heroCardTitle">ENTREGA RÁPIDA</strong>
-            <span id="heroCardSub">CHAME NO WHATSAPP E RECEBA COM AGILIDADE</span>
+            <strong id="heroCardTitle">ATENDIMENTO</strong>
+            <span id="heroCardSub">CLIQUE PARA FALAR NO WHATSAPP</span>
           </div>
           <img id="heroLogo" src="/assets/logo-farmalima.png" alt="LOGO" />
         </div>
@@ -427,65 +420,92 @@
   </div>
 
   <script>
-    const DEFAULT_DATA = {
-      brandName: "FARMA LIMA",
-      brandSub: "ENDEREÇOS • CONTATOS • WHATSAPP",
-      pillText: "DISK MEDICAÇÃO",
-      heroTitle: "BEM VINDO À FARMA LIMA",
-      heroDesc: "ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA. CLIQUE NO WHATSAPP PARA FALAR AGORA OU VEJA AS UNIDADES ABAIXO.",
-      heroCardTitle: "ENTREGA RÁPIDA",
-      heroCardSub: "CHAME NO WHATSAPP E RECEBA COM AGILIDADE",
-      globalWhatsapp: "5592999999999",
-      footerText: "© 2026 FARMA LIMA",
-      units: [
-        {
-          name: "CENTRO",
-          note: "ATENDIMENTO RÁPIDO",
-          address: "AV LEONARDO MALCHER, N 783",
-          whatsapp: "5592999999999",
-          maps: ""
-        }
-      ]
+    const DEFAULT = {
+      theme:{ bg:"#050608", text:"#EAF2F2", red:"#EC1F26", teal:"#34CCD1" },
+      brand:{ name:"FARMA LIMA", tagline:"ENDEREÇOS • CONTATOS • WHATSAPP", logoUrl:"/assets/logo-farmalima.png" },
+      hero:{ title:"BEM-VINDO À FARMA LIMA", text:"ATENDIMENTO RÁPIDO, PRESENÇA LOCAL E CONFIANÇA." },
+      mainWhatsapp:{ number:"5592999999999", message:"OLÁ! QUERO INFORMAÇÕES DA FARMA LIMA.", label:"FALAR NO WHATSAPP" },
+      units:[]
     };
 
     function waLink(phone, text){
       const p = (phone || "").replace(/\D/g, "");
-      const t = encodeURIComponent(text || "OLÁ! QUERO ATENDIMENTO.");
+      const t = encodeURIComponent((text || "OLÁ! QUERO ATENDIMENTO.").toUpperCase());
       return `https://wa.me/${p}?text=${t}`;
     }
-
     function mapsLink(address){
-      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((address||"").toUpperCase())}`;
     }
 
-    function setText(id, value){
-      const el = document.getElementById(id);
-      if(el) el.textContent = value || "";
+    function setCSSVar(name, value){
+      if(!value) return;
+      document.documentElement.style.setProperty(name, value);
+    }
+
+    function applyTheme(theme){
+      // Mapeia do admin -> CSS do site
+      setCSSVar("--BG", theme.bg);
+      setCSSVar("--TEXT", theme.text);
+      setCSSVar("--PRIMARY", theme.teal);
+      setCSSVar("--SECONDARY", theme.red);
+
+      // Ajusta cores derivadas (cards/muted) se quiser manter o mesmo padrão
+      // CARD e MUTED ficam fixos do layout atual (padrão moderno)
     }
 
     function render(data){
-      setText("brandName", data.brandName);
-      setText("brandSub", data.brandSub);
-      setText("pill", data.pillText);
-      setText("heroTitle", data.heroTitle);
-      setText("heroDesc", data.heroDesc);
-      setText("heroCardTitle", data.heroCardTitle);
-      setText("heroCardSub", data.heroCardSub);
-      setText("footer", data.footerText);
+      const d = {
+        ...DEFAULT,
+        ...data,
+        theme: { ...DEFAULT.theme, ...(data.theme||{}) },
+        brand: { ...DEFAULT.brand, ...(data.brand||{}) },
+        hero: { ...DEFAULT.hero, ...(data.hero||{}) },
+        mainWhatsapp: { ...DEFAULT.mainWhatsapp, ...(data.mainWhatsapp||{}) },
+        units: Array.isArray(data.units) ? data.units : (DEFAULT.units||[])
+      };
 
-      const mainWa = waLink(data.globalWhatsapp, "OLÁ! QUERO ATENDIMENTO NA FARMA LIMA.");
+      applyTheme(d.theme);
+
+      // Brand
+      document.getElementById("brandName").textContent = (d.brand.name || "").toUpperCase();
+      document.getElementById("brandSub").textContent = (d.brand.tagline || "").toUpperCase();
+
+      const logo = d.brand.logoUrl || "/assets/logo-farmalima.png";
+      document.getElementById("topLogo").src = logo;
+      document.getElementById("heroLogo").src = logo;
+
+      // Hero
+      document.getElementById("heroTitle").textContent = (d.hero.title || "").toUpperCase();
+      document.getElementById("heroDesc").textContent = (d.hero.text || "").toUpperCase();
+
+      // WhatsApp principal
+      const mainWa = waLink(d.mainWhatsapp.number, d.mainWhatsapp.message);
       const cta = document.getElementById("ctaWhatsapp");
       cta.href = mainWa;
+      cta.textContent = (d.mainWhatsapp.label || "FALAR NO WHATSAPP").toUpperCase();
 
       const floatWrap = document.getElementById("floatWrap");
       const floatA = document.getElementById("floatWhatsapp");
       floatA.href = mainWa;
-      floatWrap.style.display = data.globalWhatsapp ? "flex" : "none";
+      floatA.textContent = (d.mainWhatsapp.label ? `WHATSAPP • ${d.mainWhatsapp.label}` : "WHATSAPP • ATENDIMENTO").toUpperCase();
+      floatWrap.style.display = d.mainWhatsapp.number ? "flex" : "none";
 
+      // Unidades
       const grid = document.getElementById("unitsGrid");
       grid.innerHTML = "";
 
-      (data.units || []).forEach((u) => {
+      const units = (d.units && d.units.length) ? d.units : [{
+        name:"CENTRO",
+        type:"FARMÁCIA",
+        badge:"red",
+        description:"ATENDIMENTO RÁPIDO",
+        address:"AV LEONARDO MALCHER, N 783",
+        maps:"",
+        whatsapp:d.mainWhatsapp.number,
+        wmsg:"OLÁ! QUERO INFORMAÇÕES."
+      }];
+
+      units.forEach((u) => {
         const card = document.createElement("div");
         card.className = "unit";
 
@@ -493,25 +513,21 @@
         header.className = "unitHead";
 
         const title = document.createElement("strong");
-        title.textContent = (u.name || "UNIDADE");
+        title.textContent = (u.name || "UNIDADE").toUpperCase();
 
         const tag = document.createElement("span");
         tag.className = "tag";
-        tag.textContent = "UNIDADE";
+        tag.textContent = ((u.type || "UNIDADE")).toUpperCase();
 
         header.appendChild(title);
         header.appendChild(tag);
 
         const p = document.createElement("p");
-        p.textContent = (u.note || "");
+        p.textContent = (u.description || "").toUpperCase();
 
         const boxAddr = document.createElement("div");
         boxAddr.className = "box";
         boxAddr.innerHTML = `<small>ENDEREÇO</small><strong>${(u.address || "").toUpperCase()}</strong>`;
-
-        const boxWa = document.createElement("div");
-        boxWa.className = "box";
-        boxWa.innerHTML = `<small>WHATSAPP</small><strong>CLIQUE PARA CONVERSAR</strong>`;
 
         const btns = document.createElement("div");
         btns.className = "rowBtns";
@@ -519,14 +535,14 @@
         const btnWa = document.createElement("a");
         btnWa.className = "btn primary";
         btnWa.textContent = "WHATSAPP";
-        btnWa.href = waLink(u.whatsapp || data.globalWhatsapp, `OLÁ! QUERO ATENDIMENTO NA UNIDADE ${u.name || ""}.`);
+        btnWa.href = waLink(u.whatsapp || d.mainWhatsapp.number, u.wmsg || d.mainWhatsapp.message);
         btnWa.target = "_blank";
         btnWa.rel = "noopener";
 
         const btnMap = document.createElement("a");
         btnMap.className = "btn";
         btnMap.textContent = "MAPS";
-        btnMap.href = u.maps ? u.maps : mapsLink(u.address || "");
+        btnMap.href = (u.maps && u.maps.trim()) ? u.maps.trim() : mapsLink(u.address || "");
         btnMap.target = "_blank";
         btnMap.rel = "noopener";
 
@@ -534,23 +550,24 @@
         btns.appendChild(btnMap);
 
         card.appendChild(header);
-        if(u.note) card.appendChild(p);
+        if (u.description) card.appendChild(p);
         card.appendChild(boxAddr);
-        card.appendChild(boxWa);
         card.appendChild(btns);
 
         grid.appendChild(card);
       });
+
+      // Footer
+      document.getElementById("footer").textContent = `© ${new Date().getFullYear()} ${(d.brand.name || "FARMA LIMA").toUpperCase()}`;
     }
 
     async function load(){
       try{
         const r = await fetch("/api/content", { cache: "no-store" });
-        if(!r.ok) throw new Error("API FAIL");
-        const data = await r.json();
-        render(Object.keys(data||{}).length ? data : DEFAULT_DATA);
+        const data = r.ok ? await r.json() : {};
+        render(Object.keys(data||{}).length ? data : DEFAULT);
       }catch(e){
-        render(DEFAULT_DATA);
+        render(DEFAULT);
       }
     }
 
