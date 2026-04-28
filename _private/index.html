@@ -193,6 +193,9 @@
         <label>WHATSAPP GLOBAL (55+DDD+NÚMERO)</label>
         <input id="globalWhatsapp" placeholder="5592..." />
 
+        <label>TOKEN DE ADMIN</label>
+        <input id="adminToken" type="password" autocomplete="current-password" placeholder="CONTENT_TOKEN" />
+
         <label>FOOTER</label>
         <input id="footerText" placeholder="© 2026 FARMA LIMA" />
       </div>
@@ -234,6 +237,7 @@
 
   <script>
     const $ = (id) => document.getElementById(id);
+    $("adminToken").value = sessionStorage.getItem("farmalima_admin_token") || "";
 
     // ✅ DADOS PADRÃO (compatível com seu site moderno)
     const DEFAULT_DATA = {
@@ -261,6 +265,20 @@
       return (v ?? "").toString().trim().toUpperCase();
     }
 
+    function escapeAttr(v){
+      return (v ?? "").toString().replace(/[&<>"']/g, (ch) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;"
+      }[ch]));
+    }
+
+    function getAdminToken(){
+      return ($("adminToken").value || "").trim();
+    }
+
     function createUnitItem(u = {}){
       const wrap = document.createElement("div");
       wrap.className = "unitItem";
@@ -276,25 +294,25 @@
         <div class="row">
           <div>
             <label>NOME</label>
-            <input class="u_name" placeholder="CENTRO" value="${normalizeUpper(u.name)}" />
+            <input class="u_name" placeholder="CENTRO" value="${escapeAttr(normalizeUpper(u.name))}" />
           </div>
           <div>
             <label>OBS (OPCIONAL)</label>
-            <input class="u_note" placeholder="ATENDIMENTO RÁPIDO" value="${normalizeUpper(u.note)}" />
+            <input class="u_note" placeholder="ATENDIMENTO RÁPIDO" value="${escapeAttr(normalizeUpper(u.note))}" />
           </div>
         </div>
 
         <label>ENDEREÇO</label>
-        <input class="u_address" placeholder="AV LEONARDO MALCHER, N 783" value="${normalizeUpper(u.address)}" />
+        <input class="u_address" placeholder="AV LEONARDO MALCHER, N 783" value="${escapeAttr(normalizeUpper(u.address))}" />
 
         <div class="row">
           <div>
             <label>WHATSAPP (55+DDD+NÚMERO)</label>
-            <input class="u_whatsapp" placeholder="5592..." value="${normalizeUpper(u.whatsapp)}" />
+            <input class="u_whatsapp" placeholder="5592..." value="${escapeAttr(normalizeUpper(u.whatsapp))}" />
           </div>
           <div>
             <label>LINK MAPS (OPCIONAL)</label>
-            <input class="u_maps" placeholder="https://maps..." value="${(u.maps ?? "").toString().trim()}" />
+            <input class="u_maps" placeholder="https://maps..." value="${escapeAttr((u.maps ?? "").toString().trim())}" />
           </div>
         </div>
       `;
@@ -400,11 +418,22 @@
     async function save(){
       setStatus("SALVANDO...", true);
       const body = collectData();
+      const token = getAdminToken();
+
+      if(!token){
+        setStatus("INFORME O TOKEN DE ADMIN ANTES DE SALVAR.", false);
+        return;
+      }
+
+      sessionStorage.setItem("farmalima_admin_token", token);
 
       try{
         const r = await fetch("/api/content", {
           method: "PUT", // ✅ alinhado com sua API
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
           body: JSON.stringify(body)
         });
 

@@ -478,7 +478,7 @@
         <div class="heroCard">
           <div class="mini">
             <strong id="heroCardTitle">EMAIL PARA CONTATO • CNPJ DAS UNIDADES</strong>
-            <span id="heroCardSub"Farma lima</span>
+            <span id="heroCardSub">Farma lima</span>
           </div>
           <img id="heroLogo" src="/assets/logo-farmalima.png" alt="LOGO" loading="lazy" decoding="async" />
         </div>
@@ -535,13 +535,24 @@
       return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address || "")}`;
     }
 
+    function safeExternalUrl(url){
+      if(!url) return "";
+
+      try{
+        const parsed = new URL(url, window.location.origin);
+        return ["http:", "https:"].includes(parsed.protocol) ? parsed.href : "";
+      }catch(e){
+        return "";
+      }
+    }
+
     function setText(id, value){
       const el = $(id);
       if(el) el.textContent = value || "";
     }
 
     function setLogos(url){
-      const safe = url && url.trim() ? url.trim() : DEFAULT_DATA.logoUrl;
+      const safe = safeExternalUrl(url) || DEFAULT_DATA.logoUrl;
       const top = $("topLogo");
       const hero = $("heroLogo");
 
@@ -581,7 +592,7 @@
       const grid = $("unitsGrid");
       grid.innerHTML = "";
 
-      (d.units || []).forEach((u) => {
+      (Array.isArray(d.units) ? d.units : []).forEach((u) => {
         const name = (u.name || "UNIDADE").toUpperCase();
         const note = (u.note || "").trim();
         const address = (u.address || "").toUpperCase();
@@ -589,24 +600,32 @@
         const card = document.createElement("article");
         card.className = "unit";
 
-        card.innerHTML = `
-          <div class="unitHead">
-            <strong title="${name}">${name}</strong>
-            <span class="tag">UNIDADE</span>
-          </div>
-          ${note ? `<p>${note}</p>` : ""}
-          <div class="box">
-            <small>ENDEREÇO</small>
-            <strong>${address || "NÃO INFORMADO"}</strong>
-          </div>
-          <div class="box">
-            <small>WHATSAPP</small>
-            <strong>CLIQUE PARA CONVERSAR</strong>
-          </div>
-          <div class="rowBtns"></div>
-        `;
+        const head = document.createElement("div");
+        head.className = "unitHead";
 
-        const btns = card.querySelector(".rowBtns");
+        const title = document.createElement("strong");
+        title.title = name;
+        title.textContent = name;
+
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = "UNIDADE";
+
+        head.appendChild(title);
+        head.appendChild(tag);
+        card.appendChild(head);
+
+        if(note){
+          const noteEl = document.createElement("p");
+          noteEl.textContent = note;
+          card.appendChild(noteEl);
+        }
+
+        card.appendChild(createBox("ENDEREÇO", address || "NÃO INFORMADO"));
+        card.appendChild(createBox("WHATSAPP", "CLIQUE PARA CONVERSAR"));
+
+        const btns = document.createElement("div");
+        btns.className = "rowBtns";
 
         const btnWa = document.createElement("a");
         btnWa.className = "btn primary";
@@ -618,15 +637,31 @@
         const btnMap = document.createElement("a");
         btnMap.className = "btn";
         btnMap.textContent = "MAPS";
-        btnMap.href = u.maps ? u.maps : mapsLink(u.address || "");
+        btnMap.href = safeExternalUrl(u.maps) || mapsLink(u.address || "");
         btnMap.target = "_blank";
         btnMap.rel = "noopener";
 
         btns.appendChild(btnWa);
         btns.appendChild(btnMap);
 
+        card.appendChild(btns);
         grid.appendChild(card);
       });
+    }
+
+    function createBox(label, value){
+      const box = document.createElement("div");
+      box.className = "box";
+
+      const small = document.createElement("small");
+      small.textContent = label;
+
+      const strong = document.createElement("strong");
+      strong.textContent = value;
+
+      box.appendChild(small);
+      box.appendChild(strong);
+      return box;
     }
 
     async function load(){
